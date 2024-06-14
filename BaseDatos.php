@@ -105,4 +105,15 @@ class BaseDatos
     }
     return $resp;
   }
+
+
+  public function getERROR()
+  {
+    return $this->ERROR;
+  }
+
+  public function setERROR($ERROR)
+  {
+    $this->ERROR = $ERROR;
+  }
 }
