@@ -12,3 +12,5 @@ $persona = new Pasajero();
 $persona->Buscar('12345678');
 echo $persona;
 
+
+
