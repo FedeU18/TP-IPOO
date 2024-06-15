@@ -117,6 +117,26 @@ class Pasajero
     return $arregloPasajero;
   }
 
+  public function insertar()
+  {
+    $base = new BaseDatos();
+    $resp = false;
+    $consultaInsertar = "INSERT INTO pasajero(pdocumento,pnombre,papellido,ptelefono) 
+      VALUES (" . $this->getNrodoc() . ",'" . $this->getNombre() . "' , '" . $this->getApellido() . "'," . $this->getTelefono() . ")";
+
+    if ($base->Iniciar()) {
+      if ($base->Ejecutar($consultaInsertar)) {
+        $resp = true;
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
+
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $resp;
+  }
+
   public function __toString()
   {
     return "Nombre: " . $this->getNombre() . "\nApellido: " . $this->getApellido() . "\nNro Documento: " . $this->getNrodoc() . "\n";
