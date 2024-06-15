@@ -73,11 +73,11 @@ class Pasajero
   public function Buscar($dni)
   {
     $base = new BaseDatos();
-    $consultaPersona = "SELECT * FROM pasajero WHERE pdocumento=" . $dni;
+    $consultaPasajero = "SELECT * FROM pasajero WHERE pdocumento=" . $dni;
 
     $resp = false;
     if ($base->Iniciar()) {
-      if ($base->Ejecutar($consultaPersona)) {
+      if ($base->Ejecutar($consultaPasajero)) {
         if ($row2 = $base->Registro()) {
           $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"]);
           $resp = true;
@@ -89,6 +89,32 @@ class Pasajero
       $this->setMensajeoperacion($base->getERROR());
     }
     return $resp;
+  }
+
+  public function listar($condicion = "")
+  {
+    $arregloPasajero = null;
+    $base = new BaseDatos();
+    $consultaPasajeros = "SELECT * FROM pasajero";
+    if ($condicion != "") {
+      $consultaPasajeros = $consultaPasajeros . " WHERE " . $condicion;
+    }
+    $consultaPasajeros .= " ORDER BY papellido";
+    if ($base->Iniciar()) {
+      if ($base->Ejecutar($consultaPasajeros)) {
+        $arregloPasajero = array();
+        while ($row2 = $base->Registro()) {
+          $pasajero = new Pasajero();
+          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"]);
+          array_push($arregloPasajero, $pasajero);
+        }
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $arregloPasajero;
   }
 
   public function __toString()
