@@ -16,76 +16,167 @@ include 'Pasajero.php';
 // Menu para modificar datos con switch
 
 $salir = false;
-$opcion = null;
 
 do {
+    echo "Bienvenido \n";
+    echo "A que seccion desea acceder? \n";
+    echo "1. Empresa \n";
+    echo "2. Responsable \n";
+    echo "3. Viaje \n";
+    echo "4. Pasajero \n";
+    echo "5. Salir \n";
 
-  echo "Bienvenido \n";
-  echo "A que seccion desea acceder? \n";
-  echo "1. Empresa \n";
-  echo "2. Responsable \n";
-  echo "3. Viaje \n";
-  echo "4. Pasajero \n";
-  echo "5. Salir \n";
+    $opcion = trim(fgets(STDIN));
 
-  $opcion = trim(fgets(STDIN));
+    switch ($opcion) {
+        case 1:
+            echo "Seccion Empresa \n";
+            echo "Que accion desea tomar? \n";
+            echo "1. Agregar \n";
+            echo "2. Modificar \n";
+            echo "3. Eliminar \n";
+            echo "4. Buscar \n";
+            echo "5. volver al menu principal \n";
 
-  if ($opcion == 1) {
-    $opcionEmpresa = null;
-    echo "Seccion Empresa \n";
-    echo "Que accion desea tomar? \n";
-    echo "1. Agregar \n";
-    echo "2. Modificar \n";
-    echo "3. Eliminar \n";
-    echo "4. Buscar \n";
-    echo "5. volver al menu principal \n";
+            $opcionEmpresa = trim(fgets(STDIN));
 
-    $opcionEmpresa = trim(fgets(STDIN));
+            switch ($opcionEmpresa) {
+                case 1:
+                    // Acción para agregar empresa
+                    break;
+                case 2:
+                    // Acción para modificar empresa
+                    break;
+                case 3:
+                    // Acción para eliminar empresa
+                    break;
+                case 4:
+                    // Acción para buscar empresa
+                    break;
+                case 5:
+                    // Volver al menú principal
+                    break;
+                default:
+                    echo "Opción no válida \n";
+                    break;
+            }
+            break;
+        
+        case 2:
+            echo "Seccion Responsable \n";
+            echo "Que accion desea tomar? \n";
+            echo "1. Agregar \n";
+            echo "2. Modificar \n";
+            echo "3. Eliminar \n";
+            echo "4. Buscar \n";
+            echo "5. volver al menu principal \n";
 
-    switch ($opcionEmpresa) {
-      case 1:
+            $opcionRespo = trim(fgets(STDIN));
 
-        break;
-      case 2:
+            switch ($opcionRespo) {
+                case 1:
+                    // Acción para agregar responsable
+                    break;
+                case 2:
+                    // Acción para modificar responsable
+                    break;
+                case 3:
+                    // Acción para eliminar responsable
+                    break;
+                case 4:
+                    // Acción para buscar responsable
+                    break;
+                case 5:
+                    // Volver al menú principal
+                    break;
+                default:
+                    echo "Opción no válida \n";
+                    break;
+            }
+            break;
+        
+        case 3:
+            echo "Seccion Viaje \n";
+            echo "Que accion desea tomar? \n";
+            echo "1. Agregar \n";
+            echo "2. Modificar \n";
+            echo "3. Eliminar \n";
+            echo "4. Buscar \n";
+            echo "5. volver al menu principal \n";
+
+            $opcionViaje = trim(fgets(STDIN));
+
+            switch ($opcionViaje) {
+                case 1:
+                    // Acción para agregar viaje
+                    break;
+                case 2:
+                    // Acción para modificar viaje
+                    break;
+                case 3:
+                    // Acción para eliminar viaje
+                    break;
+                case 4:
+                    // Acción para buscar viaje
+                    break;
+                case 5:
+                    // Volver al menú principal
+                    break;
+                default:
+                    echo "Opción no válida \n";
+                    break;
+            }
+            break;
+        
+        case 4:
+            echo "Seccion Pasajero \n";
+            echo "Que accion desea tomar? \n";
+            echo "1. Agregar \n";
+            echo "2. Modificar \n";
+            echo "3. Eliminar \n";
+            echo "4. Buscar \n";
+            echo "5. volver al menu principal \n";
+
+            $opcionPasajero = trim(fgets(STDIN));
+
+            switch ($opcionPasajero) {
+                case 1:
+                    // Acción para agregar pasajero
+                    break;
+                case 2:
+                    // Acción para modificar pasajero
+                    break;
+                case 3:
+                    // Acción para eliminar pasajero
+                    break;
+                case 4:
+                    echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
+                    $dni = trim(fgets(STDIN));
+                    $persona = new Pasajero();
+                    $persona->Buscar($dni);
+                    if ($persona !== null) {
+                        echo $persona;
+                    } else {
+                        echo "No se encontro a la persona indicada.\n";
+                    }
+                    break;
+                case 5:
+                    // Volver al menú principal
+                    break;
+                default:
+                    echo "Opción no válida \n";
+                    break;
+            }
+            break;
+        
+        case 5:
+            $salir = true;
+            break;
+
+        default:
+            echo "Opción no válida \n";
+            break;
     }
-  } else if ($opcion == 2) {
-    $opcionRespo = null;
-    echo "Seccion Responsable \n";
-    echo "Que accion desea tomar? \n";
-    echo "1. Agregar \n";
-    echo "2. Modificar \n";
-    echo "3. Eliminar \n";
-    echo "4. Buscar \n";
-    echo "5. volver al menu principal \n";
-
-    switch ($opcionRespo) {
-      case 1:
-    }
-  } else if ($opcion == 3) {
-    $opcionViaje = null;
-    echo "Seccion Viaje \n";
-    echo "Que accion desea tomar? \n";
-    echo "1. Agregar \n";
-    echo "2. Modificar \n";
-    echo "3. Eliminar \n";
-    echo "4. Buscar \n";
-    echo "5. volver al menu principal \n";
-
-    switch ($opcionViaje) {
-      case 1:
-    }
-  } else if ($opcion == 4) {
-    $opcionPasajero = null;
-    echo "Seccion Pasajero \n";
-    echo "Que accion desea tomar? \n";
-    echo "1. Agregar \n";
-    echo "2. Modificar \n";
-    echo "3. Eliminar \n";
-    echo "4. Buscar \n";
-    echo "5. volver al menu principal \n";
-
-    switch ($opcionPasajero) {
-      case 1:
-    }
-  }
 } while (!$salir);
+
+echo "Gracias por usar el sistema. ¡Hasta luego!\n";
