@@ -84,7 +84,15 @@ do {
                     // Acción para eliminar responsable
                     break;
                 case 4:
-                    // Acción para buscar responsable
+                    echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
+                    $numEmpleado = trim(fgets(STDIN));
+                    $objResp = new Responsable();
+                    $objResp->Buscar($numEmpleado);
+                    if ($objResp !== null) {
+                        echo $objResp;
+                    } else {
+                        echo "No se encontro a la persona indicada.\n";
+                    }
                     break;
                 case 5:
                     // Volver al menú principal

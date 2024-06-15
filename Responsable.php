@@ -7,15 +7,16 @@ Class Responsable{
     private $nomb;
     private $apellido;
     private $dniRespV;
+    private $mensajeoperacion;
 
 
-    public function __construct($numEmpleado, $numLicencia,  $nombre, $apellido, $dniResp) 
+    public function __construct() 
     {
-        $this->numEmp = $numEmpleado;
-        $this->numLic = $numLicencia;
-        $this->nomb = $nombre;
-        $this->apellido = $apellido;
-        $this->dniRespV = $dniResp;
+        $this->numEmp = "";
+        $this->numLic = "";
+        $this->nomb = "";
+        $this->apellido = "";
+        $this->dniRespV = "";
     }
 
 
@@ -57,11 +58,48 @@ Class Responsable{
     {
         $this->dniRespV = $dniResp;
     }
+    public function getMensajeoperacion()
+    {
+      return $this->mensajeoperacion;
+    }
+    public function setMensajeoperacion($mensajeoperacion)
+    {
+      $this->mensajeoperacion = $mensajeoperacion;
+    }
+
+    public function cargar ($numEmpleado, $nombre, $apellido, $numLicencia){
+        $this->setNumEmp($numEmpleado);
+        $this->setNumLic($numLicencia,);
+        $this->setNomb ($nombre);
+        $this->setApellido($apellido);
+        
+    }
+
+    public function Buscar($numEmpleado)
+  {
+    $base = new BaseDatos();
+    $consultaEmpleado = "SELECT * FROM responsable WHERE rnumeroempleado=" . $numEmpleado;
+
+    $resp = false;
+    if ($base->Iniciar()) {
+      if ($base->Ejecutar($consultaEmpleado)) {
+        if ($row2 = $base->Registro()) {
+          $this->cargar($row2["rnumeroempleado"], $row2["rnombre"], $row2["rapellido"], $row2["rnumerolicencia"]);
+          $resp = true;
+        }
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $resp;
+  }
 
 
     public function __toString()
     {
-        return  "El responsable de viaje es el empleado: " . $this->getNumEmp() . " , " .
-        $this->getNomb(). " " . $this->getApellido() . " , numero de liciencia: " .  $this->getNumLic() . "\n" . "Numero de Dni: " . $this->getDniResp();
+        return  "Responsable: " . $this->getNumEmp() . " \n " .
+        $this->getNomb(). " " . $this->getApellido() . " \n numero de liciencia: " .  $this->getNumLic() . "\n" ;
     }
 }
