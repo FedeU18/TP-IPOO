@@ -151,7 +151,8 @@ do {
             echo "2. Modificar \n";
             echo "3. Eliminar \n";
             echo "4. Buscar \n";
-            echo "5. volver al menu principal \n";
+            echo "5. Listar todos los pasajeros \n";
+            echo "6. volver al menu principal \n";
 
             $opcionPasajero = trim(fgets(STDIN));
 
@@ -176,7 +177,18 @@ do {
                         echo "No se encontro a la persona indicada.\n";
                     }
                     break;
+
                 case 5:
+                    echo "Mostrando Lista completa de pasajeros: ";
+                    $objPasajero = new Pasajero();
+                     
+                    $listaPasajeros = $objPasajero->Listar();
+                    $cadena = "";
+                    foreach($listaPasajeros as $pasajero){
+                        $cadena .= $pasajero . "\n";
+                    }
+                    echo $cadena;
+                case 6:
                     // Volver al menú principal
                     break;
                 default:
