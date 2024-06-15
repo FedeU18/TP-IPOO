@@ -131,7 +131,27 @@ class Pasajero
         $this->setMensajeoperacion($base->getERROR());
       }
     } else {
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $resp;
+  }
 
+  public function modificar()
+  {
+    $resp = false;
+    $base = new BaseDatos();
+    $consultaModificar =
+      "UPDATE pasajero SET pnombre ='" . $this->getNombre()
+      . "', papellido = '" . $this->getApellido()
+      . "', ptelefono=" . $this->getTelefono()
+      . " WHERE pdocumento=" . $this->getNrodoc();
+    if ($base->Iniciar()) {
+      if ($base->Ejecutar($consultaModificar)) {
+        $resp = true;
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
       $this->setMensajeoperacion($base->getERROR());
     }
     return $resp;
