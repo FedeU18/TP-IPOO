@@ -84,7 +84,7 @@ do {
                     // Acción para eliminar responsable
                     break;
                 case 4:
-                    echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
+                    echo "Ingrese el numero de empleado que desea buscar: \n";
                     $numEmpleado = trim(fgets(STDIN));
                     $objResp = new Responsable();
                     $objResp->Buscar($numEmpleado);
@@ -125,7 +125,15 @@ do {
                     // Acción para eliminar viaje
                     break;
                 case 4:
-                    // Acción para buscar viaje
+                    echo "Ingrese el numero del viaje que desea buscar: \n";
+                    $idViaje = trim(fgets(STDIN));
+                    $objViaje = new Viaje();
+                    $objViaje->Buscar($idViaje);
+                    if ($objViaje !== null) {
+                        echo $objViaje;
+                    } else {
+                        echo "No se encontro el viaje indicado.\n";
+                    }
                     break;
                 case 5:
                     // Volver al menú principal
