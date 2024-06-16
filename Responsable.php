@@ -169,6 +169,23 @@ class Responsable
     return $resp;
   }
 
+  public function eliminar()
+  {
+    $base = new BaseDatos();
+    $resp = false;
+    if ($base->Iniciar()) {
+      $consultaEliminar = "DELETE FROM responsable WHERE rnumeroempleado=" . $this->getNumEmp();
+      if ($base->Ejecutar($consultaEliminar)) {
+        $resp = true;
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $resp;
+  }
+
 
   public function __toString()
   {
