@@ -157,6 +157,23 @@ class Pasajero
     return $resp;
   }
 
+  public function eliminar()
+  {
+    $base = new BaseDatos();
+    $resp = false;
+    if ($base->Iniciar()) {
+      $consultaEliminar = "DELETE FROM pasajero WHERE pdocumento=" . $this->getNrodoc();
+      if ($base->Ejecutar($consultaEliminar)) {
+        $resp = true;
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $resp;
+  }
+
   public function __toString()
   {
     return "Nombre: " . $this->getNombre() . "\nApellido: " . $this->getApellido() . "\nNro Documento: " . $this->getNrodoc() . "\n";
