@@ -148,6 +148,27 @@ class Responsable
     return $resp;
   }
 
+  public function modificar()
+  {
+    $resp = false;
+    $base = new BaseDatos();
+    $consultaModificar =
+      "UPDATE responsable SET rnumerolicencia ='" . $this->getNumLic()
+      . "', rnombre = '" . $this->getNomb()
+      . "', rapellido=" . $this->getApellido()
+      . " WHERE rnumeroempleado=" . $this->getNumEmp();
+    if ($base->Iniciar()) {
+      if ($base->Ejecutar($consultaModificar)) {
+        $resp = true;
+      } else {
+        $this->setMensajeoperacion($base->getERROR());
+      }
+    } else {
+      $this->setMensajeoperacion($base->getERROR());
+    }
+    return $resp;
+  }
+
 
   public function __toString()
   {
