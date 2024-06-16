@@ -133,8 +133,8 @@ class Responsable
   {
     $base = new BaseDatos();
     $resp = false;
-    $consultaInsertar = "INSERT INTO responsable(rnumeroempleado,rnumerolicencia,rnombre,rapellido) 
-      VALUES (" . $this->getNumEmp() . "," . $this->getNumLic() . " , '" . $this->getNomb() . "','" . $this->getApellido() . "')";
+    $consultaInsertar = "INSERT INTO responsable(rnumerolicencia,rnombre,rapellido) 
+      VALUES (" . $this->getNumLic() . " , '" . $this->getNomb() . "','" . $this->getApellido() . "')";
 
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaInsertar)) {
