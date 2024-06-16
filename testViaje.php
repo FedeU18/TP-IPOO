@@ -51,7 +51,15 @@ do {
                     // Acción para eliminar empresa
                     break;
                 case 4:
-                    // Acción para buscar empresa
+                    echo "Ingrese el numero de empresa que desea buscar: \n";
+                    $numEmpresa = trim(fgets(STDIN));
+                    $objEmpresa = new Empresa();
+                    $objEmpresa->Buscar($numEmpresa);
+                    if ($objEmpresa !== null) {
+                        echo $objEmpresa;
+                    } else {
+                        echo "No se encontro la empresa con esta identificacion.\n";
+                    }
                     break;
                 case 5:
                     // Volver al menú principal
