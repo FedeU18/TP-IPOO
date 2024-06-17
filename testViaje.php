@@ -280,6 +280,114 @@ function menuEmpresa()
   }
 }
 
+function menuViaje() {
+  echo "Sección Viaje \n";
+  echo "¿Qué acción desea tomar? \n";
+  echo "1. Agregar \n";
+  echo "2. Modificar \n";
+  echo "3. Eliminar \n";
+  echo "4. Buscar \n";
+  echo "5. Volver al menú principal \n";
+
+  $opcionViaje = trim(fgets(STDIN));
+
+  switch ($opcionViaje) {
+      case 1:
+          // Acción para agregar viaje
+          echo "AGREGAR VIAJE \n\n";
+          echo "Ingrese destino del viaje: \n";
+          $destino = trim(fgets(STDIN));
+          echo "Ingrese capacidad máxima de pasajeros: \n";
+          $capacidadMax = trim(fgets(STDIN));
+          echo "Ingrese ID de la empresa: \n";
+          $idEmpresa = trim(fgets(STDIN));
+          echo "Ingrese número del empleado responsable: \n";
+          $responsable = trim(fgets(STDIN));
+          echo "Ingrese costo del viaje: \n";
+          $costoViaje = trim(fgets(STDIN));
+          
+          $objViaje = new Viaje();
+          $objViaje->cargar(0, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje);
+          
+          if($objViaje->insertar()) {
+              echo "Viaje agregado con éxito.\n";
+          } else {
+              echo "Error al agregar el viaje.\n";
+          }
+          break;
+
+      case 2:
+          // Acción para modificar viaje
+          echo "MODIFICAR VIAJE \n\n";
+          echo "Ingrese el ID del viaje a modificar: \n";
+          $idViaje = trim(fgets(STDIN));
+          
+          $objViaje = new Viaje();
+          if ($objViaje->Buscar($idViaje)) {
+              echo "Ingrese el nuevo destino del viaje (actual: ".$objViaje->getDestino()."): \n";
+              $destino = trim(fgets(STDIN));
+              echo "Ingrese la nueva capacidad máxima de pasajeros (actual: ".$objViaje->getMaxCantP()."): \n";
+              $capacidadMax = trim(fgets(STDIN));
+              echo "Ingrese el nuevo ID de la empresa (actual: ".$objViaje->getIdEmpresa()."): \n";
+              $idEmpresa = trim(fgets(STDIN));
+              echo "Ingrese el nuevo número del empleado responsable (actual: ".$objViaje->getResponsable()."): \n";
+              $responsable = trim(fgets(STDIN));
+              echo "Ingrese el nuevo costo del viaje (actual: ".$objViaje->getCostoViaje()."): \n";
+              $costoViaje = trim(fgets(STDIN));
+
+              $objViaje->cargar($idViaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje);
+
+              if($objViaje->modificar()) {
+                  echo "Viaje modificado con éxito.\n";
+              } else {
+                  echo "Error al modificar el viaje.\n";
+              }
+          } else {
+              echo "Viaje no encontrado.\n";
+          }
+          break;
+
+      case 3:
+          // Acción para eliminar viaje
+          echo "ELIMINAR VIAJE \n\n";
+          echo "Ingrese el ID del viaje a eliminar: \n";
+          $idViaje = trim(fgets(STDIN));
+          
+          $objViaje = new Viaje();
+          if ($objViaje->Buscar($idViaje)) {
+              if($objViaje->eliminar()) {
+                  echo "Viaje eliminado con éxito.\n";
+              } else {
+                  echo "Error al eliminar el viaje.\n";
+              }
+          } else {
+              echo "Viaje no encontrado.\n";
+          }
+          break;
+
+      case 4:
+          // Acción para buscar viaje
+          echo "Ingrese el número del viaje que desea buscar: \n";
+          $idViaje = trim(fgets(STDIN));
+          $objViaje = new Viaje();
+          if ($objViaje->Buscar($idViaje)) {
+              echo $objViaje;
+          } else {
+              echo "No se encontró el viaje indicado.\n";
+          }
+          break;
+
+      case 5:
+          // Volver al menú principal
+          echo "Volver al menú principal\n";
+          break;
+
+      default:
+          echo "Opción no válida \n";
+          break;
+  }
+}
+
 
 // Menu para modificar datos con switch
 

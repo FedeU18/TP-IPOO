@@ -14,17 +14,17 @@ class Viaje
   private $colPasajeros;
   private $mensajeoperacion;
 
-  public function __construct()
-  {
-    $this->idviaje = "";
-    $this->vdestino = "";
-    $this->vcantmaxpasajeros = "";
-    $this->idempresa = "";
-    $this->rnumeroempleado = "";
-    $this->vimporte = "";
-    $this->montoTotalAbonado = "";
-    $this->colPasajeros = "";
-  }
+    public function __construct( )
+    {
+        $this->idviaje = 0; 
+        $this->vdestino="";
+        $this->vcantmaxpasajeros= 0;
+        $this->idempresa = null;
+        $this->rnumeroempleado =null;
+        $this->vimporte = 0;
+        $this->montoTotalAbonado = 0;
+        $this->colPasajeros =null;
+    }
 
   public function cargar($idviaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje)
   {
@@ -174,12 +174,12 @@ class Viaje
     return $arregloViajes;
   }
 
-  public function insertar()
-  {
-    $base = new BaseDatos();
-    $resp = false;
-    $consultaInsertar = "INSERT INTO viaje(vdestino,vcantmaxpasajeros,idempresa,rnumeroempleado,vimporte) 
-VALUES (, '" . $this->getDestino() . "'," . $this->getMaxCantP() . ", " . $this->getIdEmpresa() . ", " . $this->getResponsable() . ", " . $this->getCostoViaje() . ")";
+    public function insertar()
+    {
+        $base = new BaseDatos();
+        $resp = false;
+        $consultaInsertar = "INSERT INTO viaje(vdestino,vcantmaxpasajeros,idempresa,rnumeroempleado,vimporte) 
+VALUES ('". $this->getDestino()."','". $this->getMaxCantP(). "', '" . $this->getIdEmpresa() . "', '" . $this->getResponsable(). "', " . $this->getCostoViaje() .")";
 
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaInsertar)) {
@@ -193,23 +193,25 @@ VALUES (, '" . $this->getDestino() . "'," . $this->getMaxCantP() . ", " . $this-
     return $resp;
   }
 
-  public function modificar()
-  {
-    $resp = false;
-    $base = new BaseDatos();
-    $consultaModificar = "UPDATE viaje SET vdestino = '" . $this->getDestino() . "'," . $this->getMaxCantP() . ", " . $this->getIdEmpresa() . ", " . $this->getResponsable() . ", " . $this->getCostoViaje() . "
-            WHERE idviaje =" . $this->getViajeCod();
-    if ($base->Iniciar()) {
-      if ($base->Ejecutar($consultaModificar)) {
-        $resp = true;
-      } else {
-        $this->setMensajeoperacion($base->getERROR());
-      }
-    } else {
-      $this->setMensajeoperacion($base->getERROR());
+    public function modificar()
+    {
+        $resp = false;
+        $base = new BaseDatos();
+        // $consultaModificar = "UPDATE viaje SET vdestino = '" .$this->getDestino(). "',". $this->getMaxCantP(). ", " . $this->getIdEmpresa() . ", " . $this->getResponsable(). ", " . $this->getCostoViaje(). "
+        //     WHERE idviaje =".$this->getViajeCod();
+        $consultaModificar = "UPDATE viaje SET vdestino = '{$this->getDestino()}' , vcantmaxpasajeros = {$this->getMaxCantP()}, idempresa = {$this->getIdEmpresa()}, rnumeroempleado = {$this->getResponsable()}, vimporte = {$this->getCostoViaje()}
+        WHERE idviaje = {$this->getViajeCod()} ";
+        if ($base->Iniciar()) {
+            if ($base->Ejecutar($consultaModificar)) {
+                $resp = true;
+            } else {
+                $this->setMensajeoperacion($base->getERROR());
+            }
+        } else {
+            $this->setMensajeoperacion($base->getERROR());
+        }
+        return $resp;
     }
-    return $resp;
-  }
 
   public function eliminar()
   {
