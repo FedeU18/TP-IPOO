@@ -55,7 +55,7 @@ class Empresa {
      */
     public function Buscar($idEmp){
         $base=new BaseDatos();
-        $consultaEmpresa="Select * from empresa where idempresa= ".$idEmp;
+        $consultaEmpresa="Select * from empresa where idempresa=".$idEmp;
         $resp= false;
         if($base->Iniciar()){
             if($base->Ejecutar($consultaEmpresa)){
@@ -83,7 +83,8 @@ class Empresa {
         if ($condicion!=""){
             $consultaEmpresas=$consultaEmpresas.' where '.$condicion;
         }
-        $consultaEmpresas.=" order by enombre";
+        $consultaEmpresas.=" order by enombre ";
+        //echo $consultaEmpresas;
         if($base->Iniciar()){
             if($base->Ejecutar($consultaEmpresas)){
                 $arregloEmpresa= array();
@@ -96,7 +97,9 @@ class Empresa {
                     $emp=new Empresa();
                     $emp->cargar($EId, $Enombre, $Edireccion);
                     array_push($arregloEmpresa,$emp);
+
                 }
+
 
             }else {
                 $this->setmensajeoperacion($base->getError());
@@ -108,19 +111,27 @@ class Empresa {
     }
 
 
+
     public function insertar(){
         $base=new BaseDatos();
         $resp= false;
-        $consultaInsertar="INSERT INTO empresa(enombre, edireccion) VALUES ('" .$this->getENombre()." ',' ".$this->getEDireccion()."')";
+        $consultaInsertar="INSERT INTO empresa(enombre, edireccion) 
+				VALUES ("."'".$this->getENombre()."','".$this->getEDireccion()."')";
 
         if($base->Iniciar()){
+
             if($base->Ejecutar($consultaInsertar)){
+
                 $resp=  true;
-            }else {
+
+            }	else {
                 $this->setmensajeoperacion($base->getError());
+
             }
+
         } else {
             $this->setmensajeoperacion($base->getError());
+
         }
         return $resp;
     }
@@ -128,15 +139,17 @@ class Empresa {
     public function modificar(){
         $resp =false;
         $base=new BaseDatos();
-        $consultaModificar="UPDATE empresa SET enombre='".$this->getENombre()."',edireccion='".$this->getEDireccion()."' WHERE idempresa=". $this->getIdEmpresa();
+        $consultaModificar="UPDATE empresa SET enombre='".$this->getENombre()."',edireccion='".$this->getEDireccion()." WHERE idempresa=". $this->getIdEmpresa();
         if($base->Iniciar()){
             if($base->Ejecutar($consultaModificar)){
                 $resp=  true;
             }else{
                 $this->setmensajeoperacion($base->getError());
+
             }
         }else{
             $this->setmensajeoperacion($base->getError());
+
         }
         return $resp;
     }
@@ -150,18 +163,19 @@ class Empresa {
                 $resp=  true;
             }else{
                 $this->setmensajeoperacion($base->getError());
+
             }
         }else{
             $this->setmensajeoperacion($base->getError());
+
         }
         return $resp;
     }
 
     public function __toString()
     {
-        return "Id Empresa: " .$this->getIdEmpresa()."\n".
-            " - Nombre: " .$this->getENombre()."\n".
-            " - Dirección: " .$this->getEDireccion()."\n";
+        return "Id Empresa: " . $this->idempresa . " - Nombre: " .  
+        $this->enombre . " - Dirección: " . $this->edireccion;
     }
 }
 

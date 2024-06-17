@@ -6,7 +6,13 @@ include 'Empresa.php';
 include 'Responsable.php';
 include 'Viaje.php';
 include 'Pasajero.php';
-
+function recorrerArreglos($arreglo){
+  $cadena = "";
+  foreach($arreglo as $elemento){
+    $cadena .= $elemento.", ";
+  }
+  return $cadena;
+}
 
 
 function menuResponsable()
@@ -178,13 +184,25 @@ function menuEmpresa(){
           echo "Ingrese la direccion\n";
           $empresaDir = trim(fgets(STDIN));
           $objEmpresa = new Empresa();
-          if($objEmpresa -> listar("enombre =" . $empresaNombre)){
-            echo "Ya existe una empresa con ese nombre";
-          }else{
-            $objEmpresa->cargar("", $empresaNombre, $empresaDir );
-            $objEmpresa->insertar();
-            echo "Empresa agregada con exito";
+
+          $condicion = "enombre LIKE '%" .$empresaNombre."%'";
+          $colEmpresas = "";
+          foreach($objEmpresa->listar($condicion) as $empresa){
+          $colEmpresas .= $empresa.", ";
           }
+          if ($colEmpresas !== ""){
+            echo "Ya existe una empresa con ese nobmre: \n";
+            echo $colEmpresas;
+          }else{
+            $objEmpresa->cargar(0, $empresaNombre, $empresaDir );
+            if($objEmpresa->insertar()){
+              echo "Empresa agregada con exito";
+
+            }else{
+              echo "Error al agregar empresa";
+            }
+          }
+         
           break;
         case 2:
           // Acción para modificar empresa
