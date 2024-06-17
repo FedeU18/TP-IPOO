@@ -286,6 +286,66 @@ function menuEmpresa()
 
 // Menu para modificar datos con switch
 
+// Menú pasajeros
+function menuPasajeros()
+{
+  $salirMenu = false;
+  do {
+    # code...
+    echo "Seccion Pasajero \n";
+    echo "Que accion desea tomar? \n";
+    echo "1. Agregar \n";
+    echo "2. Modificar \n";
+    echo "3. Eliminar \n";
+    echo "4. Buscar \n";
+    echo "5. Listar todos los pasajeros \n";
+    echo "6. volver al menu principal \n";
+
+    $opcionPasajero = trim(fgets(STDIN));
+
+    switch ($opcionPasajero) {
+      case 1:
+        // Acción para agregar pasajero
+        break;
+      case 2:
+        // Acción para modificar pasajero
+        break;
+      case 3:
+        // Acción para eliminar pasajero
+        break;
+      case 4:
+        echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
+        $dni = trim(fgets(STDIN));
+        $persona = new Pasajero();
+        $persona->Buscar($dni);
+        if ($persona !== null) {
+          echo $persona;
+        } else {
+          echo "No se encontro a la persona indicada.\n";
+        }
+        break;
+
+      case 5:
+        echo "Mostrando Lista completa de pasajeros: ";
+        $objPasajero = new Pasajero();
+
+        $listaPasajeros = $objPasajero->Listar();
+        $cadena = "";
+        foreach ($listaPasajeros as $pasajero) {
+          $cadena .= $pasajero . "\n";
+        }
+        echo $cadena;
+      case 6:
+        // Volver al menú principal
+        $salirMenu = true;
+        break;
+      default:
+        echo "Opción no válida \n";
+        break;
+    }
+  } while (!$salirMenu);
+}
+
 $salir = false;
 
 do {
@@ -350,56 +410,7 @@ do {
       break;
 
     case 4:
-      echo "Seccion Pasajero \n";
-      echo "Que accion desea tomar? \n";
-      echo "1. Agregar \n";
-      echo "2. Modificar \n";
-      echo "3. Eliminar \n";
-      echo "4. Buscar \n";
-      echo "5. Listar todos los pasajeros \n";
-      echo "6. volver al menu principal \n";
-
-      $opcionPasajero = trim(fgets(STDIN));
-
-      switch ($opcionPasajero) {
-        case 1:
-          // Acción para agregar pasajero
-          break;
-        case 2:
-          // Acción para modificar pasajero
-          break;
-        case 3:
-          // Acción para eliminar pasajero
-          break;
-        case 4:
-          echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
-          $dni = trim(fgets(STDIN));
-          $persona = new Pasajero();
-          $persona->Buscar($dni);
-          if ($persona !== null) {
-            echo $persona;
-          } else {
-            echo "No se encontro a la persona indicada.\n";
-          }
-          break;
-
-        case 5:
-          echo "Mostrando Lista completa de pasajeros: ";
-          $objPasajero = new Pasajero();
-
-          $listaPasajeros = $objPasajero->Listar();
-          $cadena = "";
-          foreach ($listaPasajeros as $pasajero) {
-            $cadena .= $pasajero . "\n";
-          }
-          echo $cadena;
-        case 6:
-          // Volver al menú principal
-          break;
-        default:
-          echo "Opción no válida \n";
-          break;
-      }
+      menuPasajeros();
       break;
 
     case 5:
