@@ -19,14 +19,17 @@ function recorrerArreglos($arreglo)
 function menuResponsable()
 {
   do {
+    echo "*********************************\n";
     echo "Seccion Responsable \n";
     echo "Que accion desea tomar? \n";
     echo "1. Agregar \n";
     echo "2. Modificar \n";
     echo "3. Eliminar \n";
     echo "4. Buscar \n";
-    echo "5. Listar\n";
+    echo "5. Listar todos los Responsables \n";
     echo "6. volver al menu principal \n";
+    echo "*********************************\n";
+
 
     $opcionRespo = trim(fgets(STDIN));
     $salirMenuResponsable = false;
@@ -175,13 +178,17 @@ function menuModificarResponsable($nroResponsable)
 
 function menuEmpresa()
 {
+  echo "*********************************\n";
   echo "Sección Empresa \n";
   echo "¿Qué acción desea tomar? \n";
   echo "1. Agregar \n";
   echo "2. Modificar \n";
   echo "3. Eliminar \n";
   echo "4. Buscar \n";
-  echo "5. Volver al menú principal \n";
+  echo "5. Listar todas las Empresas \n";
+  echo "6. Volver al menú principal \n";
+  echo "*********************************\n";
+
 
   $opcionEmpresa = trim(fgets(STDIN));
 
@@ -270,27 +277,46 @@ function menuEmpresa()
         echo "No se encontró la empresa con ese ID.\n";
       }
       break;
-    case 5:
-      // Volver al menú principal
-      echo "Volviendo al menú principal...\n";
-      break;
-    default:
-      echo "Opción no válida. Por favor, intente de nuevo.\n";
-      break;
+      case 5:
+        echo "Mostrando Lista completa de Empresas: \n";
+        $objEmpresa = new Empresa();
+
+        $listaEmpresa = $objEmpresa->Listar();
+        $cadena = "";
+        if ($listaEmpresa != null) {
+
+          foreach ($listaEmpresa as $empresa) {
+            $cadena .= $empresa . "\n";
+          }
+          echo $cadena;
+        } else {
+          echo "Aún no se cargaron empresas en la BD\n";
+        }
+        break;
+      case 6:
+        // Volver al menú principal
+        $salirMenu = true;
+        break;
+      default:
+        echo "Opción no válida \n";
+        break;
   }
 }
 
 function menuViaje() {
+  echo "*********************************\n";
   echo "Sección Viaje \n";
   echo "¿Qué acción desea tomar? \n";
   echo "1. Agregar \n";
   echo "2. Modificar \n";
   echo "3. Eliminar \n";
   echo "4. Buscar \n";
-  echo "5. Volver al menú principal \n";
+  echo "5. Listar todos los Viajes \n";
+  echo "6. Volver al menú principal \n";
+  echo "*********************************\n";
 
   $opcionViaje = trim(fgets(STDIN));
-
+  $salirMenuViaje = false;
   switch ($opcionViaje) {
       case 1:
           // Acción para agregar viaje
@@ -395,14 +421,29 @@ function menuViaje() {
           }
           break;
 
-      case 5:
-          // Volver al menú principal
-          echo "Volver al menú principal\n";
-          break;
-
-      default:
-          echo "Opción no válida \n";
-          break;
+          case 5:
+            echo "Mostrando Lista completa de pasajeros: \n";
+            $objViaje = new Viaje();
+    
+            $listaViajes = $objViaje->Listar();
+            $cadena = "";
+            if ($listaViajes != null) {
+    
+              foreach ($listaViajes as $viaje) {
+                $cadena .= $viaje . "\n";
+              }
+              echo $cadena;
+            } else {
+              echo "Aún no se cargaron pasajeros en la BD\n";
+            }
+            break;
+          case 6:
+            // Volver al menú principal
+            $salirMenuViaje = true;
+            break;
+          default:
+            echo "Opción no válida \n";
+            break;
   }
 }
 
@@ -414,6 +455,7 @@ function menuPasajeros()
 {
   do {
     # code...
+    echo "*********************************\n";
     echo "Seccion Pasajero \n";
     echo "Que accion desea tomar? \n";
     echo "1. Agregar \n";
@@ -422,6 +464,7 @@ function menuPasajeros()
     echo "4. Buscar \n";
     echo "5. Listar todos los pasajeros \n";
     echo "6. volver al menu principal \n";
+    echo "*********************************\n";
 
     $salirMenu = false;
     $opcionPasajero = trim(fgets(STDIN));
@@ -577,6 +620,7 @@ function menuModificarPasajero($nroDoc)
 $salir = false;
 
 do {
+  echo "*********************************\n";
   echo "Bienvenido \n";
   echo "A que seccion desea acceder? \n";
   echo "1. Empresa \n";
@@ -584,6 +628,7 @@ do {
   echo "3. Viaje \n";
   echo "4. Pasajero \n";
   echo "5. Salir \n";
+  echo "*********************************\n";
 
   $opcion = trim(fgets(STDIN));
 
