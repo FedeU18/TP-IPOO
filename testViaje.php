@@ -23,6 +23,24 @@ function menuResponsable()
   switch ($opcionRespo) {
     case 1:
       // Acción para agregar responsable
+      echo "AGREGAR RESPONSABLE \n\n";
+      echo "Ingrese número de licencia: \n";
+      $nroLic = trim(fgets(STDIN));
+      echo "Ingrese nombre: \n";
+      $nombre = trim(fgets(STDIN));
+      echo "Ingrese apellido: \n";
+      $apellido = trim(fgets(STDIN));
+      $objResponsable = new Responsable();
+      $objResponsable->cargar(0, $nombre, $apellido, $nroLic);
+      if ($nombre != "" && $apellido != "" && $nroLic != 0) {
+        if ($objResponsable->insertar()) {
+          echo "El responsable se agregó con éxito a la BD";
+        } else {
+          echo "El responsable no se pudo agregar a la BD";
+        }
+      } else {
+        echo "Faltaron campos para agregar el responsable a la BD";
+      }
       break;
     case 2:
       // Acción para modificar responsable
