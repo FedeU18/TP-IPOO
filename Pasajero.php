@@ -122,7 +122,7 @@ class Pasajero
     $base = new BaseDatos();
     $resp = false;
     $consultaInsertar = "INSERT INTO pasajero(pdocumento,pnombre,papellido,ptelefono) 
-      VALUES (" . $this->getNrodoc() . ",'" . $this->getNombre() . "' , '" . $this->getApellido() . "'," . $this->getTelefono() . ")";
+      VALUES (" . $this->getNrodoc()  . ",'" . $this->getNombre() . "' , '" . $this->getApellido() . "'," . $this->getTelefono() . ")";
 
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaInsertar)) {

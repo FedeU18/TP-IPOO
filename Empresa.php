@@ -116,7 +116,7 @@ class Empresa {
         $base=new BaseDatos();
         $resp= false;
         $consultaInsertar="INSERT INTO empresa(enombre, edireccion) 
-				VALUES (".$this->getENombre()."','".$this->getEDireccion()."')";
+				VALUES ("."'".$this->getENombre()."','".$this->getEDireccion()."')";
 
         if($base->Iniciar()){
 
