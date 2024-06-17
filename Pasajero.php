@@ -13,7 +13,7 @@ class Pasajero
     $this->nombre = "";
     $this->apellido = "";
     $this->nrodoc = 0;
-    $this->telefono = "";
+    $this->telefono = 0;
   }
 
   public function cargar($nrodoc, $nombre, $apellido, $telefono)
