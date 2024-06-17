@@ -13,11 +13,10 @@ class Responsable
 
   public function __construct()
   {
-    $this->numEmp = "";
-    $this->numLic = "";
+    $this->numEmp = 0;
+    $this->numLic = 0;
     $this->nomb = "";
     $this->apellido = "";
-    $this->dniRespV = "";
   }
 
 
@@ -57,14 +56,6 @@ class Responsable
     $this->apellido = $apellido;
   }
 
-  public function getDniResp()
-  {
-    return $this->dniRespV;
-  }
-  public function setDniResp($dniResp)
-  {
-    $this->dniRespV = $dniResp;
-  }
   public function getMensajeoperacion()
   {
     return $this->mensajeoperacion;
