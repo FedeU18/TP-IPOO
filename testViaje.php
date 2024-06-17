@@ -16,7 +16,8 @@ function menuResponsable()
   echo "2. Modificar \n";
   echo "3. Eliminar \n";
   echo "4. Buscar \n";
-  echo "5. volver al menu principal \n";
+  echo "5. Listar\n";
+  echo "6. volver al menu principal \n";
 
   $opcionRespo = trim(fgets(STDIN));
 
@@ -44,9 +45,24 @@ function menuResponsable()
       break;
     case 2:
       // Acción para modificar responsable
+      echo "MODIFICAR RESPONSABLE \n\n";
+
       break;
     case 3:
       // Acción para eliminar responsable
+      //CORREGIR, NO ELIMINAR RESPONSABLE SI YA ESTÁ REFERENCIADO EN VIAJES
+      //ESPERAR A QUE ESTÉN LOS MÉTODOS EN LA CLASE VIAJE
+      echo "ELIMINAR RESPONSABLE \n\n";
+      echo "Ingrese el número del responsable que desea eliminar\n";
+      $nroResponsable = trim(fgets(STDIN));
+      $objResponsable = new Responsable();
+      if ($objResponsable->Buscar($nroResponsable)) {
+        echo $objResponsable . "\n";
+        $objResponsable->eliminar();
+        echo "Responsable eliminado de la BD\n";
+      } else {
+        echo "Responsable no encontrado\n";
+      }
       break;
     case 4:
       echo "Ingrese el numero de empleado que desea buscar: \n";
@@ -60,8 +76,11 @@ function menuResponsable()
       }
       break;
     case 5:
-      // Volver al menú principal
+      // Listar todos los responsables
+
       break;
+    case 6:
+      // Volver al menú principal
     default:
       echo "Opción no válida \n";
       break;
