@@ -173,9 +173,6 @@ function menuModificarResponsable($nroResponsable)
   }
 }
 
-// $persona = new Pasajero();
-// $persona->Buscar('12345678');
-// echo $persona;
 function menuEmpresa()
 {
   echo "Sección Empresa \n";
@@ -474,44 +471,7 @@ do {
       break;
 
     case 3:
-      echo "Seccion Viaje \n";
-      echo "Que accion desea tomar? \n";
-      echo "1. Agregar \n";
-      echo "2. Modificar \n";
-      echo "3. Eliminar \n";
-      echo "4. Buscar \n";
-      echo "5. volver al menu principal \n";
-
-      $opcionViaje = trim(fgets(STDIN));
-
-      switch ($opcionViaje) {
-        case 1:
-          // Acción para agregar viaje
-          break;
-        case 2:
-          // Acción para modificar viaje
-          break;
-        case 3:
-          // Acción para eliminar viaje
-          break;
-        case 4:
-          echo "Ingrese el numero del viaje que desea buscar: \n";
-          $idViaje = trim(fgets(STDIN));
-          $objViaje = new Viaje();
-          $objViaje->Buscar($idViaje);
-          if ($objViaje !== null) {
-            echo $objViaje;
-          } else {
-            echo "No se encontro el viaje indicado.\n";
-          }
-          break;
-        case 5:
-          // Volver al menú principal
-          break;
-        default:
-          echo "Opción no válida \n";
-          break;
-      }
+      // menuViaje();
       break;
 
     case 4:
