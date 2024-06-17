@@ -158,26 +158,8 @@ function menuModificarResponsable($nroResponsable)
 // $persona = new Pasajero();
 // $persona->Buscar('12345678');
 // echo $persona;
-
-
-// Menu para modificar datos con switch
-
-$salir = false;
-
-do {
-  echo "Bienvenido \n";
-  echo "A que seccion desea acceder? \n";
-  echo "1. Empresa \n";
-  echo "2. Responsable \n";
-  echo "3. Viaje \n";
-  echo "4. Pasajero \n";
-  echo "5. Salir \n";
-
-  $opcion = trim(fgets(STDIN));
-
-  switch ($opcion) {
-    case 1:
-      echo "Seccion Empresa \n";
+function menuEmpresa(){
+  echo "Seccion Empresa \n";
       echo "Que accion desea tomar? \n";
       echo "1. Agregar \n";
       echo "2. Modificar \n";
@@ -190,6 +172,19 @@ do {
       switch ($opcionEmpresa) {
         case 1:
           // Acción para agregar empresa
+          echo "AGREGAR EMPRESA \n\n";
+          echo "Ingrese nombre de la empresa: \n";
+          $empresaNombre = trim(fgets(STDIN));
+          echo "Ingrese la direccion\n";
+          $empresaDir = trim(fgets(STDIN));
+          $objEmpresa = new Empresa();
+          if($objEmpresa -> listar("enombre =" . $empresaNombre)){
+            echo "Ya existe una empresa con ese nombre";
+          }else{
+            $objEmpresa->cargar("", $empresaNombre, $empresaDir );
+            $objEmpresa->insertar();
+            echo "Empresa agregada con exito";
+          }
           break;
         case 2:
           // Acción para modificar empresa
@@ -215,6 +210,26 @@ do {
           echo "Opción no válida \n";
           break;
       }
+}
+
+// Menu para modificar datos con switch
+
+$salir = false;
+
+do {
+  echo "Bienvenido \n";
+  echo "A que seccion desea acceder? \n";
+  echo "1. Empresa \n";
+  echo "2. Responsable \n";
+  echo "3. Viaje \n";
+  echo "4. Pasajero \n";
+  echo "5. Salir \n";
+
+  $opcion = trim(fgets(STDIN));
+
+  switch ($opcion) {
+    case 1:
+        menuEmpresa();
       break;
 
     case 2:
