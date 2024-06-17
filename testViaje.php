@@ -77,7 +77,15 @@ function menuResponsable()
       break;
     case 5:
       // Listar todos los responsables
-
+      $objResponsable = new Responsable();
+      $colResponsables = $objResponsable->listar();
+      if ($colResponsables != null) {
+        foreach ($colResponsables as $responsable) {
+          echo "\n" . $responsable . "\n";
+        }
+      } else {
+        echo "aún no hay responsables cargados en la db";
+      }
       break;
     case 6:
       // Volver al menú principal
