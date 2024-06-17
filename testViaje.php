@@ -37,12 +37,12 @@ function menuResponsable()
         $objResponsable->cargar(0, $nombre, $apellido, $nroLic);
         if ($nombre != "" && $apellido != "" && $nroLic != 0) {
           if ($objResponsable->insertar()) {
-            echo "El responsable se agregó con éxito a la BD";
+            echo "El responsable se agregó con éxito a la BD\n";
           } else {
-            echo "El responsable no se pudo agregar a la BD";
+            echo "El responsable no se pudo agregar a la BD\n";
           }
         } else {
-          echo "Faltaron campos para agregar el responsable a la BD";
+          echo "Faltaron campos para agregar el responsable a la BD\n";
         }
         break;
       case 2:
@@ -79,7 +79,7 @@ function menuResponsable()
         $objResp = new Responsable();
         $objResp->Buscar($numEmpleado);
         if ($objResp !== null) {
-          echo $objResp;
+          echo $objResp . "\n";
         } else {
           echo "No se encontro a la persona indicada.\n";
         }
@@ -134,13 +134,21 @@ function menuModificarResponsable($nroResponsable)
           echo "Ingrese el nuevo apellido: \n";
           $modificacion = trim(fgets(STDIN));
           $objResponsable->setApellido($modificacion);
-          $objResponsable->modificar();
+          if ($objResponsable->modificar()) {
+            echo "Responsable modificado con éxito\n";
+          } else {
+            echo "No se pudo modificar el responsable\n";
+          }
           break;
         case 3:
           echo "Ingrese el nuevo numero de licencia: \n";
           $modificacion = trim(fgets(STDIN));
           $objResponsable->setNumLic($modificacion);
-          $objResponsable->modificar();
+          if ($objResponsable->modificar()) {
+            echo "Responsable modificado con éxito\n";
+          } else {
+            echo "No se pudo modificar el responsable\n";
+          }
           break;
         case 4:
           $salirMenuModificarResponsable = true;
