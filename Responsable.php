@@ -143,11 +143,7 @@ class Responsable
   {
     $resp = false;
     $base = new BaseDatos();
-    $consultaModificar =
-      "UPDATE responsable SET rnumerolicencia ='" . $this->getNumLic()
-      . "', rnombre = '" . $this->getNomb()
-      . "', rapellido=" . $this->getApellido()
-      . " WHERE rnumeroempleado=" . $this->getNumEmp();
+    $consultaModificar = "UPDATE responsable SET rnumerolicencia = {$this->getNumLic()}, rnombre = '{$this->getNomb()}', rapellido = '{$this->getApellido()}' WHERE rnumeroempleado = {$this->getNumEmp()}";
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaModificar)) {
         $resp = true;

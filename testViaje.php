@@ -8,6 +8,7 @@ include 'Viaje.php';
 include 'Pasajero.php';
 
 
+
 function menuResponsable()
 {
   echo "Seccion Responsable \n";
@@ -20,78 +21,137 @@ function menuResponsable()
   echo "6. volver al menu principal \n";
 
   $opcionRespo = trim(fgets(STDIN));
-
-  switch ($opcionRespo) {
-    case 1:
-      // Acción para agregar responsable
-      echo "AGREGAR RESPONSABLE \n\n";
-      echo "Ingrese número de licencia: \n";
-      $nroLic = trim(fgets(STDIN));
-      echo "Ingrese nombre: \n";
-      $nombre = trim(fgets(STDIN));
-      echo "Ingrese apellido: \n";
-      $apellido = trim(fgets(STDIN));
-      $objResponsable = new Responsable();
-      $objResponsable->cargar(0, $nombre, $apellido, $nroLic);
-      if ($nombre != "" && $apellido != "" && $nroLic != 0) {
-        if ($objResponsable->insertar()) {
-          echo "El responsable se agregó con éxito a la BD";
+  $salirMenuResponsable = false;
+  do {
+    switch ($opcionRespo) {
+      case 1:
+        // Acción para agregar responsable
+        echo "AGREGAR RESPONSABLE \n\n";
+        echo "Ingrese número de licencia: \n";
+        $nroLic = trim(fgets(STDIN));
+        echo "Ingrese nombre: \n";
+        $nombre = trim(fgets(STDIN));
+        echo "Ingrese apellido: \n";
+        $apellido = trim(fgets(STDIN));
+        $objResponsable = new Responsable();
+        $objResponsable->cargar(0, $nombre, $apellido, $nroLic);
+        if ($nombre != "" && $apellido != "" && $nroLic != 0) {
+          if ($objResponsable->insertar()) {
+            echo "El responsable se agregó con éxito a la BD";
+          } else {
+            echo "El responsable no se pudo agregar a la BD";
+          }
         } else {
-          echo "El responsable no se pudo agregar a la BD";
+          echo "Faltaron campos para agregar el responsable a la BD";
         }
-      } else {
-        echo "Faltaron campos para agregar el responsable a la BD";
-      }
-      break;
-    case 2:
-      // Acción para modificar responsable
-      echo "MODIFICAR RESPONSABLE \n\n";
+        break;
+      case 2:
+        // Acción para modificar responsable
+        echo "MODIFICAR RESPONSABLE \n\n";
+        echo "Ingrese el número del responsable que desea modificar: \n";
+        $nroResponsable = trim(fgets(STDIN));
+        $objResponsable = new Responsable;
+        if ($objResponsable->Buscar($nroResponsable)) {
+          menuModificarResponsable($nroResponsable);
+        } else {
+          echo "No se encontró un responsable con ese número \n";
+        }
+        break;
+      case 3:
+        // Acción para eliminar responsable
+        //CORREGIR, NO ELIMINAR RESPONSABLE SI YA ESTÁ REFERENCIADO EN VIAJES
+        //ESPERAR A QUE ESTÉN LOS MÉTODOS EN LA CLASE VIAJE
+        echo "ELIMINAR RESPONSABLE \n\n";
+        echo "Ingrese el número del responsable que desea eliminar\n";
+        $nroResponsable = trim(fgets(STDIN));
+        $objResponsable = new Responsable();
+        if ($objResponsable->Buscar($nroResponsable)) {
+          echo $objResponsable . "\n";
+          $objResponsable->eliminar();
+          echo "Responsable eliminado de la BD\n";
+        } else {
+          echo "Responsable no encontrado\n";
+        }
+        break;
+      case 4:
+        echo "Ingrese el numero de empleado que desea buscar: \n";
+        $numEmpleado = trim(fgets(STDIN));
+        $objResp = new Responsable();
+        $objResp->Buscar($numEmpleado);
+        if ($objResp !== null) {
+          echo $objResp;
+        } else {
+          echo "No se encontro a la persona indicada.\n";
+        }
+        break;
+      case 5:
+        // Listar todos los responsables
+        $objResponsable = new Responsable();
+        $colResponsables = $objResponsable->listar();
+        if ($colResponsables != null) {
+          foreach ($colResponsables as $responsable) {
+            echo "\n" . $responsable . "\n";
+          }
+        } else {
+          echo "aún no hay responsables cargados en la db";
+        }
+        break;
+      case 6:
+        // Volver al menú principal
+        $salirMenuResponsable = true;
 
-      break;
-    case 3:
-      // Acción para eliminar responsable
-      //CORREGIR, NO ELIMINAR RESPONSABLE SI YA ESTÁ REFERENCIADO EN VIAJES
-      //ESPERAR A QUE ESTÉN LOS MÉTODOS EN LA CLASE VIAJE
-      echo "ELIMINAR RESPONSABLE \n\n";
-      echo "Ingrese el número del responsable que desea eliminar\n";
-      $nroResponsable = trim(fgets(STDIN));
-      $objResponsable = new Responsable();
-      if ($objResponsable->Buscar($nroResponsable)) {
-        echo $objResponsable . "\n";
-        $objResponsable->eliminar();
-        echo "Responsable eliminado de la BD\n";
-      } else {
-        echo "Responsable no encontrado\n";
+      default:
+        echo "Opción no válida \n";
+        break;
+    }
+  } while (!$salirMenuResponsable);
+}
+
+function menuModificarResponsable($nroResponsable)
+{
+  $objResponsable = new Responsable();
+  $salirMenuModificarResponsable = false;
+  if ($objResponsable->Buscar($nroResponsable)) {
+    do {
+      echo "\nElija una opción\n";
+      echo "1-Modificar nombre\n";
+      echo "2-Modificar apellido\n";
+      echo "3-Modificar numero licencia\n";
+      echo "4-Volver\n";
+      $opcion = trim(fgets(STDIN));
+      switch ($opcion) {
+        case 1:
+          echo "Ingrese el nuevo nombre: \n";
+          $modificacion = trim(fgets(STDIN));
+          $objResponsable->setNomb($modificacion);
+          if ($objResponsable->modificar()) {
+            echo "Responsable modificado con éxito\n";
+          } else {
+            echo "No se pudo modificar el responsable\n";
+          }
+          break;
+        case 2:
+          echo "Ingrese el nuevo apellido: \n";
+          $modificacion = trim(fgets(STDIN));
+          $objResponsable->setApellido($modificacion);
+          $objResponsable->modificar();
+          break;
+        case 3:
+          echo "Ingrese el nuevo numero de licencia: \n";
+          $modificacion = trim(fgets(STDIN));
+          $objResponsable->setNumLic($modificacion);
+          $objResponsable->modificar();
+          break;
+        case 4:
+          $salirMenuModificarResponsable = true;
+          break;
+        default:
+          echo "Opción no valida, vuelva a intentar.";
+          break;
       }
-      break;
-    case 4:
-      echo "Ingrese el numero de empleado que desea buscar: \n";
-      $numEmpleado = trim(fgets(STDIN));
-      $objResp = new Responsable();
-      $objResp->Buscar($numEmpleado);
-      if ($objResp !== null) {
-        echo $objResp;
-      } else {
-        echo "No se encontro a la persona indicada.\n";
-      }
-      break;
-    case 5:
-      // Listar todos los responsables
-      $objResponsable = new Responsable();
-      $colResponsables = $objResponsable->listar();
-      if ($colResponsables != null) {
-        foreach ($colResponsables as $responsable) {
-          echo "\n" . $responsable . "\n";
-        }
-      } else {
-        echo "aún no hay responsables cargados en la db";
-      }
-      break;
-    case 6:
-      // Volver al menú principal
-    default:
-      echo "Opción no válida \n";
-      break;
+    } while (!$salirMenuModificarResponsable);
+  } else {
+    echo "Responsable no encontrado";
   }
 }
 
