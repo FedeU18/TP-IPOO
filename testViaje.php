@@ -333,6 +333,14 @@ function menuPasajeros()
         break;
       case 2:
         // Acción para modificar pasajero
+        echo "MODIFICAR PASAJERO \n\n";
+        echo "Ingrese el número de documento del pasajero a modificar: \n";
+        $nroDoc = trim(fgets(STDIN));
+        if ($objPasajero->Buscar($nroDoc)) {
+          menuModificarPasajero($nroDoc);
+        } else {
+          echo "No se encontró un pasajero con ese número de documento\n";
+        }
         break;
       case 3:
         // Acción para eliminar pasajero
@@ -368,6 +376,62 @@ function menuPasajeros()
         break;
     }
   } while (!$salirMenu);
+}
+
+function menuModificarPasajero($nroDoc)
+{
+  $objPasajero = new Pasajero();
+  if ($objPasajero->Buscar($nroDoc)) {
+    do {
+      $salirMenuModificarPasajero = false;
+      echo "\nElija una opción\n";
+      echo "1-Modificar nombre\n";
+      echo "2-Modificar apellido\n";
+      echo "3-Modificar numero teléfono\n";
+      echo "4-Volver\n";
+      $opcion = trim(fgets(STDIN));
+      switch ($opcion) {
+        case 1:
+          echo "Ingrese el nuevo nombre: \n";
+          $modificacion = trim(fgets(STDIN));
+          $objPasajero->setNombre($modificacion);
+          if ($objPasajero->modificar()) {
+            echo "Pasajero modificado con éxito\n";
+          } else {
+            echo "No se pudo modificar el Pasajero\n";
+          }
+          break;
+        case 2:
+          echo "Ingrese el nuevo apellido: \n";
+          $modificacion = trim(fgets(STDIN));
+          $objPasajero->setApellido($modificacion);
+          if ($objPasajero->modificar()) {
+            echo "Pasajero modificado con éxito\n";
+          } else {
+            echo "No se pudo modificar el Pasajero\n";
+          }
+          break;
+        case 3:
+          echo "Ingrese el nuevo numero de teléfono: \n";
+          $modificacion = trim(fgets(STDIN));
+          $objPasajero->setTelefono($modificacion);
+          if ($objPasajero->modificar()) {
+            echo "Pasajero modificado con éxito\n";
+          } else {
+            echo "No se pudo modificar el Pasajero\n";
+          }
+          break;
+        case 4:
+          $salirMenuModificarPasajero = true;
+          break;
+        default:
+          echo "Opción no valida, vuelva a intentar.";
+          break;
+      }
+    } while (!$salirMenuModificarPasajero);
+  } else {
+    echo "Pasajero no encontrado";
+  }
 }
 
 $salir = false;
