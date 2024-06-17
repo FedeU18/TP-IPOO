@@ -180,13 +180,13 @@ function menuModificarResponsable($nroResponsable)
 // echo $persona;
 function menuEmpresa()
 {
-  echo "Seccion Empresa \n";
-  echo "Que accion desea tomar? \n";
+  echo "Sección Empresa \n";
+  echo "¿Qué acción desea tomar? \n";
   echo "1. Agregar \n";
   echo "2. Modificar \n";
   echo "3. Eliminar \n";
   echo "4. Buscar \n";
-  echo "5. volver al menu principal \n";
+  echo "5. Volver al menú principal \n";
 
   $opcionEmpresa = trim(fgets(STDIN));
 
@@ -196,53 +196,95 @@ function menuEmpresa()
       echo "AGREGAR EMPRESA \n\n";
       echo "Ingrese nombre de la empresa: \n";
       $empresaNombre = trim(fgets(STDIN));
-      echo "Ingrese la direccion\n";
+      echo "Ingrese la dirección: \n";
       $empresaDir = trim(fgets(STDIN));
       $objEmpresa = new Empresa();
 
       $condicion = "enombre LIKE '%" . $empresaNombre . "%'";
-      $colEmpresas = "";
-      foreach ($objEmpresa->listar($condicion) as $empresa) {
-        $colEmpresas .= $empresa . ", ";
-      }
-      if ($colEmpresas !== "") {
-        echo "Ya existe una empresa con ese nobmre: \n";
-        echo $colEmpresas;
+      $colEmpresas = $objEmpresa->listar($condicion);
+      if (!empty($colEmpresas)) {
+        echo "Ya existe una empresa con ese nombre: \n";
+        foreach ($colEmpresas as $empresa) {
+          echo $empresa . "\n";
+        }
       } else {
         $objEmpresa->cargar(0, $empresaNombre, $empresaDir);
         if ($objEmpresa->insertar()) {
-          echo "Empresa agregada con exito";
+          echo "Empresa agregada con éxito.\n";
         } else {
-          echo "Error al agregar empresa";
+          echo "Error al agregar empresa.\n";
         }
       }
-
       break;
     case 2:
       // Acción para modificar empresa
+      echo "MODIFICAR EMPRESA \n\n";
+      echo "Ingrese el ID de la empresa que desea modificar: \n";
+      $idEmpresa = trim(fgets(STDIN));
+      $objEmpresa = new Empresa();
+      if ($objEmpresa->Buscar($idEmpresa)) {
+        echo "Empresa encontrada: \n";
+        echo $objEmpresa . "\n";
+        echo "Ingrese el nuevo nombre de la empresa (deje en blanco para no modificar): \n";
+        $nuevoNombre = trim(fgets(STDIN));
+        echo "Ingrese la nueva dirección de la empresa (deje en blanco para no modificar): \n";
+        $nuevaDireccion = trim(fgets(STDIN));
+
+        if (!empty($nuevoNombre)) {
+          $objEmpresa->setENombre($nuevoNombre);
+        }
+        if (!empty($nuevaDireccion)) {
+          $objEmpresa->setEDireccion($nuevaDireccion);
+        }
+
+        if ($objEmpresa->modificar()) {
+          echo "Empresa modificada con éxito.\n";
+        } else {
+          echo "Error al modificar empresa.\n";
+        }
+      } else {
+        echo "No se encontró la empresa con ese ID.\n";
+      }
       break;
     case 3:
       // Acción para eliminar empresa
+      echo "ELIMINAR EMPRESA \n\n";
+      echo "Ingrese el ID de la empresa que desea eliminar: \n";
+      $idEmpresa = trim(fgets(STDIN));
+      $objEmpresa = new Empresa();
+      if ($objEmpresa->Buscar($idEmpresa)) {
+        if ($objEmpresa->eliminar()) {
+          echo "Empresa eliminada con éxito.\n";
+        } else {
+          echo "Error al eliminar empresa.\n";
+        }
+      } else {
+        echo "No se encontró la empresa con ese ID.\n";
+      }
       break;
     case 4:
-      echo "Ingrese el numero de empresa que desea buscar: \n";
-      $numEmpresa = trim(fgets(STDIN));
+      // Acción para buscar empresa
+      echo "BUSCAR EMPRESA \n\n";
+      echo "Ingrese el ID de la empresa que desea buscar: \n";
+      $idEmpresa = trim(fgets(STDIN));
       $objEmpresa = new Empresa();
-      $objEmpresa->Buscar($numEmpresa);
-      if ($objEmpresa !== null) {
-        echo $objEmpresa;
+      if ($objEmpresa->Buscar($idEmpresa)) {
+        echo "Empresa encontrada: \n";
+        echo $objEmpresa . "\n";
       } else {
-        echo "No se encontro la empresa con esta identificacion.\n";
+        echo "No se encontró la empresa con ese ID.\n";
       }
       break;
     case 5:
       // Volver al menú principal
+      echo "Volviendo al menú principal...\n";
       break;
     default:
-      echo "Opción no válida \n";
+      echo "Opción no válida. Por favor, intente de nuevo.\n";
       break;
   }
 }
+
 
 // Menu para modificar datos con switch
 

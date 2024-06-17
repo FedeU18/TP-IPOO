@@ -139,7 +139,8 @@ class Empresa {
     public function modificar(){
         $resp =false;
         $base=new BaseDatos();
-        $consultaModificar="UPDATE empresa SET enombre='".$this->getENombre()."',edireccion='".$this->getEDireccion()." WHERE idempresa=". $this->getIdEmpresa();
+        $consultaModificar="UPDATE empresa SET enombre='".$this->getENombre()."', edireccion='".$this->getEDireccion()."' WHERE idempresa=". $this->getIdEmpresa();
+
         if($base->Iniciar()){
             if($base->Ejecutar($consultaModificar)){
                 $resp=  true;
