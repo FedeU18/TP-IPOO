@@ -30,6 +30,8 @@ function menuResponsable()
 
     $opcionRespo = trim(fgets(STDIN));
     $salirMenuResponsable = false;
+    $objResponsable = new Responsable;
+
     switch ($opcionRespo) {
       case 1:
         // Acción para agregar responsable
@@ -57,7 +59,6 @@ function menuResponsable()
         echo "MODIFICAR RESPONSABLE \n\n";
         echo "Ingrese el número del responsable que desea modificar: \n";
         $nroResponsable = trim(fgets(STDIN));
-        $objResponsable = new Responsable;
         if ($objResponsable->Buscar($nroResponsable)) {
           menuModificarResponsable($nroResponsable);
         } else {
@@ -69,7 +70,6 @@ function menuResponsable()
         echo "ELIMINAR RESPONSABLE \n\n";
         echo "Ingrese el número del responsable que desea eliminar\n";
         $nroResponsable = trim(fgets(STDIN));
-        $objResponsable = new Responsable();
         $objViaje = new Viaje();
         $consultaViaje = "rnumeroempleado = " . $nroResponsable;
         $colViajes = $objViaje->listar($consultaViaje);
@@ -88,17 +88,15 @@ function menuResponsable()
       case 4:
         echo "Ingrese el numero de empleado que desea buscar: \n";
         $numEmpleado = trim(fgets(STDIN));
-        $objResp = new Responsable();
-        $objResp->Buscar($numEmpleado);
-        if ($objResp !== null) {
-          echo $objResp . "\n";
+        $objResponsable->Buscar($numEmpleado);
+        if ($objResponsable !== null) {
+          echo $objResponsable . "\n";
         } else {
           echo "No se encontro a la persona indicada.\n";
         }
         break;
       case 5:
         // Listar todos los responsables
-        $objResponsable = new Responsable();
         $colResponsables = $objResponsable->listar();
         if ($colResponsables != null) {
           foreach ($colResponsables as $responsable) {
