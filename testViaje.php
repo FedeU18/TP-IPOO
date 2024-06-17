@@ -326,14 +326,33 @@ function menuViaje() {
           if ($objViaje->Buscar($idViaje)) {
               echo "Ingrese el nuevo destino del viaje (actual: ".$objViaje->getDestino()."): \n";
               $destino = trim(fgets(STDIN));
+              if ($destino == "") {
+                  $destino = $objViaje->getDestino();
+              }
+
               echo "Ingrese la nueva capacidad máxima de pasajeros (actual: ".$objViaje->getMaxCantP()."): \n";
               $capacidadMax = trim(fgets(STDIN));
+              if ($capacidadMax == "") {
+                  $capacidadMax = $objViaje->getMaxCantP();
+              }
+
               echo "Ingrese el nuevo ID de la empresa (actual: ".$objViaje->getIdEmpresa()."): \n";
               $idEmpresa = trim(fgets(STDIN));
+              if ($idEmpresa == "") {
+                  $idEmpresa = $objViaje->getIdEmpresa();
+              }
+
               echo "Ingrese el nuevo número del empleado responsable (actual: ".$objViaje->getResponsable()."): \n";
               $responsable = trim(fgets(STDIN));
+              if ($responsable == "") {
+                  $responsable = $objViaje->getResponsable();
+              }
+
               echo "Ingrese el nuevo costo del viaje (actual: ".$objViaje->getCostoViaje()."): \n";
               $costoViaje = trim(fgets(STDIN));
+              if ($costoViaje == "") {
+                  $costoViaje = $objViaje->getCostoViaje();
+              }
 
               $objViaje->cargar($idViaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje);
 
@@ -346,7 +365,6 @@ function menuViaje() {
               echo "Viaje no encontrado.\n";
           }
           break;
-
       case 3:
           // Acción para eliminar viaje
           echo "ELIMINAR VIAJE \n\n";
@@ -579,7 +597,7 @@ do {
       break;
 
     case 3:
-      // menuViaje();
+      menuViaje();
       break;
 
     case 4:
