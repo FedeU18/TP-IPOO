@@ -6,10 +6,11 @@ include 'Empresa.php';
 include 'Responsable.php';
 include 'Viaje.php';
 include 'Pasajero.php';
-function recorrerArreglos($arreglo){
+function recorrerArreglos($arreglo)
+{
   $cadena = "";
-  foreach($arreglo as $elemento){
-    $cadena .= $elemento.", ";
+  foreach ($arreglo as $elemento) {
+    $cadena .= $elemento . ", ";
   }
   return $cadena;
 }
@@ -17,18 +18,18 @@ function recorrerArreglos($arreglo){
 
 function menuResponsable()
 {
-  echo "Seccion Responsable \n";
-  echo "Que accion desea tomar? \n";
-  echo "1. Agregar \n";
-  echo "2. Modificar \n";
-  echo "3. Eliminar \n";
-  echo "4. Buscar \n";
-  echo "5. Listar\n";
-  echo "6. volver al menu principal \n";
-
-  $opcionRespo = trim(fgets(STDIN));
-  $salirMenuResponsable = false;
   do {
+    echo "Seccion Responsable \n";
+    echo "Que accion desea tomar? \n";
+    echo "1. Agregar \n";
+    echo "2. Modificar \n";
+    echo "3. Eliminar \n";
+    echo "4. Buscar \n";
+    echo "5. Listar\n";
+    echo "6. volver al menu principal \n";
+
+    $opcionRespo = trim(fgets(STDIN));
+    $salirMenuResponsable = false;
     switch ($opcionRespo) {
       case 1:
         // Acción para agregar responsable
@@ -65,18 +66,23 @@ function menuResponsable()
         break;
       case 3:
         // Acción para eliminar responsable
-        //CORREGIR, NO ELIMINAR RESPONSABLE SI YA ESTÁ REFERENCIADO EN VIAJES
-        //ESPERAR A QUE ESTÉN LOS MÉTODOS EN LA CLASE VIAJE
         echo "ELIMINAR RESPONSABLE \n\n";
         echo "Ingrese el número del responsable que desea eliminar\n";
         $nroResponsable = trim(fgets(STDIN));
         $objResponsable = new Responsable();
-        if ($objResponsable->Buscar($nroResponsable)) {
-          echo $objResponsable . "\n";
-          $objResponsable->eliminar();
-          echo "Responsable eliminado de la BD\n";
+        $objViaje = new Viaje();
+        $consultaViaje = "rnumeroempleado = " . $nroResponsable;
+        $colViajes = $objViaje->listar($consultaViaje);
+        if (count($colViajes) > 0) {
+          echo "No se puede eliminar un responsable a cargo de un viaje\n";
         } else {
-          echo "Responsable no encontrado\n";
+          if ($objResponsable->Buscar($nroResponsable)) {
+            echo $objResponsable . "\n";
+            $objResponsable->eliminar();
+            echo "Responsable eliminado de la BD\n";
+          } else {
+            echo "Responsable no encontrado\n";
+          }
         }
         break;
       case 4:
@@ -116,9 +122,9 @@ function menuResponsable()
 function menuModificarResponsable($nroResponsable)
 {
   $objResponsable = new Responsable();
-  $salirMenuModificarResponsable = false;
   if ($objResponsable->Buscar($nroResponsable)) {
     do {
+      $salirMenuModificarResponsable = false;
       echo "\nElija una opción\n";
       echo "1-Modificar nombre\n";
       echo "2-Modificar apellido\n";
@@ -172,70 +178,70 @@ function menuModificarResponsable($nroResponsable)
 // $persona = new Pasajero();
 // $persona->Buscar('12345678');
 // echo $persona;
-function menuEmpresa(){
+function menuEmpresa()
+{
   echo "Seccion Empresa \n";
-      echo "Que accion desea tomar? \n";
-      echo "1. Agregar \n";
-      echo "2. Modificar \n";
-      echo "3. Eliminar \n";
-      echo "4. Buscar \n";
-      echo "5. volver al menu principal \n";
+  echo "Que accion desea tomar? \n";
+  echo "1. Agregar \n";
+  echo "2. Modificar \n";
+  echo "3. Eliminar \n";
+  echo "4. Buscar \n";
+  echo "5. volver al menu principal \n";
 
-      $opcionEmpresa = trim(fgets(STDIN));
+  $opcionEmpresa = trim(fgets(STDIN));
 
-      switch ($opcionEmpresa) {
-        case 1:
-          // Acción para agregar empresa
-          echo "AGREGAR EMPRESA \n\n";
-          echo "Ingrese nombre de la empresa: \n";
-          $empresaNombre = trim(fgets(STDIN));
-          echo "Ingrese la direccion\n";
-          $empresaDir = trim(fgets(STDIN));
-          $objEmpresa = new Empresa();
+  switch ($opcionEmpresa) {
+    case 1:
+      // Acción para agregar empresa
+      echo "AGREGAR EMPRESA \n\n";
+      echo "Ingrese nombre de la empresa: \n";
+      $empresaNombre = trim(fgets(STDIN));
+      echo "Ingrese la direccion\n";
+      $empresaDir = trim(fgets(STDIN));
+      $objEmpresa = new Empresa();
 
-          $condicion = "enombre LIKE '%" .$empresaNombre."%'";
-          $colEmpresas = "";
-          foreach($objEmpresa->listar($condicion) as $empresa){
-          $colEmpresas .= $empresa.", ";
-          }
-          if ($colEmpresas !== ""){
-            echo "Ya existe una empresa con ese nobmre: \n";
-            echo $colEmpresas;
-          }else{
-            $objEmpresa->cargar(0, $empresaNombre, $empresaDir );
-            if($objEmpresa->insertar()){
-              echo "Empresa agregada con exito";
-
-            }else{
-              echo "Error al agregar empresa";
-            }
-          }
-         
-          break;
-        case 2:
-          // Acción para modificar empresa
-          break;
-        case 3:
-          // Acción para eliminar empresa
-          break;
-        case 4:
-          echo "Ingrese el numero de empresa que desea buscar: \n";
-          $numEmpresa = trim(fgets(STDIN));
-          $objEmpresa = new Empresa();
-          $objEmpresa->Buscar($numEmpresa);
-          if ($objEmpresa !== null) {
-            echo $objEmpresa;
-          } else {
-            echo "No se encontro la empresa con esta identificacion.\n";
-          }
-          break;
-        case 5:
-          // Volver al menú principal
-          break;
-        default:
-          echo "Opción no válida \n";
-          break;
+      $condicion = "enombre LIKE '%" . $empresaNombre . "%'";
+      $colEmpresas = "";
+      foreach ($objEmpresa->listar($condicion) as $empresa) {
+        $colEmpresas .= $empresa . ", ";
       }
+      if ($colEmpresas !== "") {
+        echo "Ya existe una empresa con ese nobmre: \n";
+        echo $colEmpresas;
+      } else {
+        $objEmpresa->cargar(0, $empresaNombre, $empresaDir);
+        if ($objEmpresa->insertar()) {
+          echo "Empresa agregada con exito";
+        } else {
+          echo "Error al agregar empresa";
+        }
+      }
+
+      break;
+    case 2:
+      // Acción para modificar empresa
+      break;
+    case 3:
+      // Acción para eliminar empresa
+      break;
+    case 4:
+      echo "Ingrese el numero de empresa que desea buscar: \n";
+      $numEmpresa = trim(fgets(STDIN));
+      $objEmpresa = new Empresa();
+      $objEmpresa->Buscar($numEmpresa);
+      if ($objEmpresa !== null) {
+        echo $objEmpresa;
+      } else {
+        echo "No se encontro la empresa con esta identificacion.\n";
+      }
+      break;
+    case 5:
+      // Volver al menú principal
+      break;
+    default:
+      echo "Opción no válida \n";
+      break;
+  }
 }
 
 // Menu para modificar datos con switch
@@ -255,7 +261,7 @@ do {
 
   switch ($opcion) {
     case 1:
-        menuEmpresa();
+      menuEmpresa();
       break;
 
     case 2:
