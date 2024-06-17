@@ -344,6 +344,17 @@ function menuPasajeros()
         break;
       case 3:
         // Acción para eliminar pasajero
+        echo "ELIMINAR PASAJERO \n\n";
+        echo "Ingrese el número de documento del pasajero que desea eliminar\n";
+        $nroDoc = trim(fgets(STDIN));
+        if ($objPasajero->Buscar($nroDoc)) {
+          echo $objPasajero . "\n";
+          $objPasajero->eliminar();
+          echo "Pasajero eliminado de la BD\n";
+        } else {
+          echo "No se encuentra un pasajero con ese número de documento en la BD\n";
+        }
+
         break;
       case 4:
         echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
@@ -358,15 +369,21 @@ function menuPasajeros()
         break;
 
       case 5:
-        echo "Mostrando Lista completa de pasajeros: ";
+        echo "Mostrando Lista completa de pasajeros: \n";
         $objPasajero = new Pasajero();
 
         $listaPasajeros = $objPasajero->Listar();
         $cadena = "";
-        foreach ($listaPasajeros as $pasajero) {
-          $cadena .= $pasajero . "\n";
+        if ($listaPasajeros != null) {
+
+          foreach ($listaPasajeros as $pasajero) {
+            $cadena .= $pasajero . "\n";
+          }
+          echo $cadena;
+        } else {
+          echo "Aún no se cargaron pasajeros en la BD\n";
         }
-        echo $cadena;
+        break;
       case 6:
         // Volver al menú principal
         $salirMenu = true;
