@@ -289,7 +289,6 @@ function menuEmpresa()
 // Menú pasajeros
 function menuPasajeros()
 {
-  $salirMenu = false;
   do {
     # code...
     echo "Seccion Pasajero \n";
@@ -301,11 +300,36 @@ function menuPasajeros()
     echo "5. Listar todos los pasajeros \n";
     echo "6. volver al menu principal \n";
 
+    $salirMenu = false;
     $opcionPasajero = trim(fgets(STDIN));
+    $objPasajero = new Pasajero();
 
     switch ($opcionPasajero) {
       case 1:
         // Acción para agregar pasajero
+        echo "AGREGAR PASAJERO\n\n";
+        echo "Ingrese número de documento: \n";
+        $nroDoc = trim(fgets(STDIN));
+        if ($objPasajero->Buscar($nroDoc)) {
+          echo "Número de documento existente en la BD\n";
+        } else {
+          echo "Ingrese nombre: \n";
+          $nombre = trim(fgets(STDIN));
+          echo "Ingrese apellido: \n";
+          $apellido = trim(fgets(STDIN));
+          echo "Ingrese número de teléfono: \n";
+          $tel = trim(fgets(STDIN));
+          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0) {
+            $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel);
+            if ($objPasajero->insertar()) {
+              echo "El pasajero se agregó correctamente a la BD\n";
+            } else {
+              echo "El pasajero no se pudo agregar a la BD\n";
+            }
+          } else {
+            echo "Faltaron campos para agregar el pasajero a la BD\n";
+          }
+        }
         break;
       case 2:
         // Acción para modificar pasajero
