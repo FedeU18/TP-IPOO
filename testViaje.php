@@ -424,6 +424,12 @@ function menuViaje()
       $idViaje = trim(fgets(STDIN));
       $objViaje = new Viaje();
       if ($objViaje->Buscar($idViaje)) {
+        $objEmpresa = new Empresa();
+        $objEmpresa->Buscar($objViaje->getIdEmpresa());
+        $objResponsable = new Responsable();
+        $objResponsable->Buscar($objViaje->getResponsable());
+        $objViaje->setResponsable($objResponsable);
+        $objViaje->setIdEmpresa($objEmpresa);
         echo $objViaje;
       } else {
         echo "No se encontró el viaje indicado.\n";
