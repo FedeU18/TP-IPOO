@@ -400,10 +400,18 @@ function menuViaje()
 
       $objViaje = new Viaje();
       if ($objViaje->Buscar($idViaje)) {
-        if ($objViaje->eliminar()) {
-          echo "Viaje eliminado con éxito.\n";
+        $objPasajero = new Pasajero();
+        $consulta = "idviaje =" . $idViaje;
+        $colPasajerosConViaje = $objPasajero->listar($consulta);
+        if (count($colPasajerosConViaje) > 0) {
+          echo "No se puede eliminar un viaje con pasajeros asociados\n";
         } else {
-          echo "Error al eliminar el viaje.\n";
+
+          if ($objViaje->eliminar()) {
+            echo "Viaje eliminado con éxito.\n";
+          } else {
+            echo "Error al eliminar el viaje.\n";
+          }
         }
       } else {
         echo "Viaje no encontrado.\n";
