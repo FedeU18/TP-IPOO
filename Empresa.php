@@ -175,7 +175,7 @@ class Empresa
 
   public function __toString()
   {
-    return "Id Empresa: " . $this->idempresa . " - Nombre: " .
-      $this->enombre . " - Dirección: " . $this->edireccion;
+    return "Id Empresa: " . $this->idempresa . "\nNombre: " .
+      $this->enombre . "\nDirección: " . $this->edireccion;
   }
 }

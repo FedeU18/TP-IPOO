@@ -176,7 +176,7 @@ class Responsable
 
   public function __toString()
   {
-    return  "Responsable: " . $this->getNumEmp() . " \n " .
-      $this->getNomb() . " " . $this->getApellido() . " \n numero de liciencia: " .  $this->getNumLic() . "\n";
+    return  "Responsable: " . $this->getNumEmp() . "\n" .
+      $this->getNomb() . " " . $this->getApellido() . "\nnumero de liciencia: " .  $this->getNumLic() . "\n";
   }
 }
