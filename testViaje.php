@@ -179,326 +179,357 @@ function menuModificarResponsable($nroResponsable)
 
 function menuEmpresa()
 {
-  echo "*********************************\n";
-  echo "Sección Empresa \n";
-  echo "¿Qué acción desea tomar? \n";
-  echo "1. Agregar \n";
-  echo "2. Modificar \n";
-  echo "3. Eliminar \n";
-  echo "4. Buscar \n";
-  echo "5. Listar todas las Empresas \n";
-  echo "6. Volver al menú principal \n";
-  echo "*********************************\n";
+
+  do {
+    # code...
+    echo "*********************************\n";
+    echo "Sección Empresa \n";
+    echo "¿Qué acción desea tomar? \n";
+    echo "1. Agregar \n";
+    echo "2. Modificar \n";
+    echo "3. Eliminar \n";
+    echo "4. Buscar \n";
+    echo "5. Listar todas las Empresas \n";
+    echo "6. Volver al menú principal \n";
+    echo "*********************************\n";
 
 
-  $opcionEmpresa = trim(fgets(STDIN));
+    $opcionEmpresa = trim(fgets(STDIN));
+    $salirMenu = false;
 
-  switch ($opcionEmpresa) {
-    case 1:
-      // Acción para agregar empresa
-      echo "AGREGAR EMPRESA \n\n";
-      echo "Ingrese nombre de la empresa: \n";
-      $empresaNombre = trim(fgets(STDIN));
-      echo "Ingrese la dirección: \n";
-      $empresaDir = trim(fgets(STDIN));
-      $objEmpresa = new Empresa();
+    switch ($opcionEmpresa) {
+      case 1:
+        // Acción para agregar empresa
+        echo "AGREGAR EMPRESA \n\n";
+        echo "Ingrese nombre de la empresa: \n";
+        $empresaNombre = trim(fgets(STDIN));
+        echo "Ingrese la dirección: \n";
+        $empresaDir = trim(fgets(STDIN));
+        $objEmpresa = new Empresa();
 
-      $condicion = "enombre LIKE '%" . $empresaNombre . "%'";
-      $colEmpresas = $objEmpresa->listar($condicion);
-      if (!empty($colEmpresas)) {
-        echo "Ya existe una empresa con ese nombre: \n";
-        foreach ($colEmpresas as $empresa) {
-          echo $empresa . "\n";
-        }
-      } else {
-        $objEmpresa->cargar(0, $empresaNombre, $empresaDir);
-        if ($objEmpresa->insertar()) {
-          echo "Empresa agregada con éxito.\n";
+        $condicion = "enombre LIKE '%" . $empresaNombre . "%'";
+        $colEmpresas = $objEmpresa->listar($condicion);
+        if (!empty($colEmpresas)) {
+          echo "Ya existe una empresa con ese nombre: \n";
+          foreach ($colEmpresas as $empresa) {
+            echo $empresa . "\n";
+          }
         } else {
-          echo "Error al agregar empresa.\n";
-        }
-      }
-      break;
-    case 2:
-      // Acción para modificar empresa
-      echo "MODIFICAR EMPRESA \n\n";
-      echo "Ingrese el ID de la empresa que desea modificar: \n";
-      $idEmpresa = trim(fgets(STDIN));
-      $objEmpresa = new Empresa();
-      if ($objEmpresa->Buscar($idEmpresa)) {
-        echo "Empresa encontrada: \n";
-        echo $objEmpresa . "\n";
-        echo "Ingrese el nuevo nombre de la empresa (deje en blanco para no modificar): \n";
-        $nuevoNombre = trim(fgets(STDIN));
-        echo "Ingrese la nueva dirección de la empresa (deje en blanco para no modificar): \n";
-        $nuevaDireccion = trim(fgets(STDIN));
-
-        if (!empty($nuevoNombre)) {
-          $objEmpresa->setENombre($nuevoNombre);
-        }
-        if (!empty($nuevaDireccion)) {
-          $objEmpresa->setEDireccion($nuevaDireccion);
-        }
-
-        if ($objEmpresa->modificar()) {
-          echo "Empresa modificada con éxito.\n";
-        } else {
-          echo "Error al modificar empresa.\n";
-        }
-      } else {
-        echo "No se encontró la empresa con ese ID.\n";
-      }
-      break;
-    case 3:
-      // Acción para eliminar empresa
-      // echo "ELIMINAR EMPRESA \n\n";
-      // echo "Ingrese el ID de la empresa que desea eliminar: \n";
-      // $idEmpresa = trim(fgets(STDIN));
-      // $objEmpresa = new Empresa();
-
-      // if ($objEmpresa->Buscar($idEmpresa)) {
-      //   if ($objEmpresa->eliminar()) {
-      //     echo "Empresa eliminada con éxito.\n";
-      //   } else {
-      //     echo "Error al eliminar empresa.\n";
-      //   }
-      // } else {
-      //   echo "No se encontró la empresa con ese ID.\n";
-      // }
-      // break;
-      // Acción para eliminar empresa
-      echo "ELIMINAR EMPRESA \n\n";
-      echo "Ingrese el ID de la empresa que desea eliminar: \n";
-      $idEmpresa = trim(fgets(STDIN));
-
-      $objEmpresa = new Empresa();
-      if ($objEmpresa->Buscar($idEmpresa)) {
-        $objViaje = new Viaje();
-        $consulta = "idempresa =" . $idEmpresa;
-        $colResponsablesConViaje = $objViaje->listar($consulta);
-        if (count($colResponsablesConViaje) > 0) {
-          echo "No se puede eliminar una empresa con empleados asociados.\n";
-        } else {
-          if ($objEmpresa->eliminar()) {
-            echo "Empresa eliminada con éxito.\n";
+          $objEmpresa->cargar(0, $empresaNombre, $empresaDir);
+          if ($objEmpresa->insertar()) {
+            echo "Empresa agregada con éxito.\n";
           } else {
-            echo "Error al eliminar empresa.\n";
+            echo "Error al agregar empresa.\n";
           }
         }
-      } else {
-        echo "No se encontró la empresa con ese ID.\n";
-      }
-    case 4:
-      // Acción para buscar empresa
-      echo "BUSCAR EMPRESA \n\n";
-      echo "Ingrese el ID de la empresa que desea buscar: \n";
-      $idEmpresa = trim(fgets(STDIN));
-      $objEmpresa = new Empresa();
-      if ($objEmpresa->Buscar($idEmpresa)) {
-        echo "Empresa encontrada: \n";
-        echo $objEmpresa . "\n";
-      } else {
-        echo "No se encontró la empresa con ese ID.\n";
-      }
-      break;
-    case 5:
-      echo "Mostrando Lista completa de Empresas: \n";
-      $objEmpresa = new Empresa();
+        break;
+      case 2:
+        // Acción para modificar empresa
+        echo "MODIFICAR EMPRESA \n\n";
+        echo "Ingrese el ID de la empresa que desea modificar: \n";
+        $idEmpresa = trim(fgets(STDIN));
+        $objEmpresa = new Empresa();
+        if ($objEmpresa->Buscar($idEmpresa)) {
+          echo "Empresa encontrada: \n";
+          echo $objEmpresa . "\n";
+          echo "Ingrese el nuevo nombre de la empresa (deje en blanco para no modificar): \n";
+          $nuevoNombre = trim(fgets(STDIN));
+          echo "Ingrese la nueva dirección de la empresa (deje en blanco para no modificar): \n";
+          $nuevaDireccion = trim(fgets(STDIN));
 
-      $listaEmpresa = $objEmpresa->Listar();
-      $cadena = "";
-      if ($listaEmpresa != null) {
+          if (!empty($nuevoNombre)) {
+            $objEmpresa->setENombre($nuevoNombre);
+          }
+          if (!empty($nuevaDireccion)) {
+            $objEmpresa->setEDireccion($nuevaDireccion);
+          }
 
-        foreach ($listaEmpresa as $empresa) {
-          $cadena .= $empresa . "\n";
+          if ($objEmpresa->modificar()) {
+            echo "Empresa modificada con éxito.\n";
+          } else {
+            echo "Error al modificar empresa.\n";
+          }
+        } else {
+          echo "No se encontró la empresa con ese ID.\n";
         }
-        echo $cadena;
-      } else {
-        echo "Aún no se cargaron empresas en la BD\n";
-      }
-      break;
-    case 6:
-      // Volver al menú principal
-      $salirMenu = true;
-      break;
-    default:
-      echo "Opción no válida \n";
-      break;
-  }
+        break;
+      case 3:
+        // Acción para eliminar empresa
+        // echo "ELIMINAR EMPRESA \n\n";
+        // echo "Ingrese el ID de la empresa que desea eliminar: \n";
+        // $idEmpresa = trim(fgets(STDIN));
+        // $objEmpresa = new Empresa();
+
+        // if ($objEmpresa->Buscar($idEmpresa)) {
+        //   if ($objEmpresa->eliminar()) {
+        //     echo "Empresa eliminada con éxito.\n";
+        //   } else {
+        //     echo "Error al eliminar empresa.\n";
+        //   }
+        // } else {
+        //   echo "No se encontró la empresa con ese ID.\n";
+        // }
+        // break;
+        // Acción para eliminar empresa
+        echo "ELIMINAR EMPRESA \n\n";
+        echo "Ingrese el ID de la empresa que desea eliminar: \n";
+        $idEmpresa = trim(fgets(STDIN));
+
+        $objEmpresa = new Empresa();
+        if ($objEmpresa->Buscar($idEmpresa)) {
+          $objViaje = new Viaje();
+          $consulta = "idempresa =" . $idEmpresa;
+          $colResponsablesConViaje = $objViaje->listar($consulta);
+          if (count($colResponsablesConViaje) > 0) {
+            echo "No se puede eliminar una empresa con empleados asociados.\n";
+          } else {
+            if ($objEmpresa->eliminar()) {
+              echo "Empresa eliminada con éxito.\n";
+            } else {
+              echo "Error al eliminar empresa.\n";
+            }
+          }
+        } else {
+          echo "No se encontró la empresa con ese ID.\n";
+        }
+      case 4:
+        // Acción para buscar empresa
+        echo "BUSCAR EMPRESA \n\n";
+        echo "Ingrese el ID de la empresa que desea buscar: \n";
+        $idEmpresa = trim(fgets(STDIN));
+        $objEmpresa = new Empresa();
+        if ($objEmpresa->Buscar($idEmpresa)) {
+          echo "Empresa encontrada: \n";
+          echo $objEmpresa . "\n";
+        } else {
+          echo "No se encontró la empresa con ese ID.\n";
+        }
+        break;
+      case 5:
+        echo "Mostrando Lista completa de Empresas: \n";
+        $objEmpresa = new Empresa();
+
+        $listaEmpresa = $objEmpresa->Listar();
+        $cadena = "";
+        if ($listaEmpresa != null) {
+
+          foreach ($listaEmpresa as $empresa) {
+            $cadena .= $empresa . "\n";
+          }
+          echo $cadena;
+        } else {
+          echo "Aún no se cargaron empresas en la BD\n";
+        }
+        break;
+      case 6:
+        // Volver al menú principal
+        $salirMenu = true;
+        break;
+      default:
+        echo "Opción no válida \n";
+        break;
+    }
+  } while (!$salirMenu);
 }
 
 function menuViaje()
 {
-  echo "*********************************\n";
-  echo "Sección Viaje \n";
-  echo "¿Qué acción desea tomar? \n";
-  echo "1. Agregar \n";
-  echo "2. Modificar \n";
-  echo "3. Eliminar \n";
-  echo "4. Buscar \n";
-  echo "5. Listar todos los Viajes \n";
-  echo "6. Volver al menú principal \n";
-  echo "*********************************\n";
 
-  $opcionViaje = trim(fgets(STDIN));
-  $salirMenuViaje = false;
-  switch ($opcionViaje) {
-    case 1:
-      // Acción para agregar viaje
-      echo "AGREGAR VIAJE \n\n";
-      echo "Ingrese destino del viaje: \n";
-      $destino = trim(fgets(STDIN));
-      echo "Ingrese capacidad máxima de pasajeros: \n";
-      $capacidadMax = trim(fgets(STDIN));
-      echo "Ingrese ID de la empresa: \n";
-      $idEmpresa = trim(fgets(STDIN));
-      $objEmpresa = new Empresa();
-      if (!$objEmpresa->Buscar($idEmpresa)) {
-        echo "Empresa no encontrada, en caso de querer volver a intentar agregar una empresa, hágalo desde las modificaciones";
-        $objEmpresa = null;
-      }
-      echo "Ingrese número del empleado responsable: \n";
-      $responsable = trim(fgets(STDIN));
-      $objResponsable = new Responsable();
-      if (!$objResponsable->Buscar($responsable)) {
-        echo "Responsable no encontrado, en caso de querer volver a intentar agregar un responsable, hágalo desde las modificaciones";
-        $objResponsable = null;
-      }
-      echo "Ingrese costo del viaje: \n";
-      $costoViaje = trim(fgets(STDIN));
+  do {
+    # code...
+    echo "*********************************\n";
+    echo "Sección Viaje \n";
+    echo "¿Qué acción desea tomar? \n";
+    echo "1. Agregar \n";
+    echo "2. Modificar \n";
+    echo "3. Eliminar \n";
+    echo "4. Buscar \n";
+    echo "5. Listar todos los Viajes \n";
+    echo "6. Listar todos los pasajeros de un Viaje \n";
+    echo "7. Volver al menú principal \n";
+    echo "*********************************\n";
 
-      $objViaje = new Viaje();
-      $objViaje->cargar(0, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje, []);
-
-      if ($objViaje->insertar()) {
-        echo "Viaje agregado con éxito.\n";
-      } else {
-        echo "Error al agregar el viaje.\n";
-      }
-      break;
-
-    case 2:
-      // Acción para modificar viaje
-      echo "MODIFICAR VIAJE \n\n";
-      echo "Ingrese el ID del viaje a modificar: \n";
-      $idViaje = trim(fgets(STDIN));
-
-      $objViaje = new Viaje();
-      if ($objViaje->Buscar($idViaje)) {
-        echo "Ingrese el nuevo destino del viaje (actual: " . $objViaje->getDestino() . "): \n";
+    $opcionViaje = trim(fgets(STDIN));
+    $salirMenuViaje = false;
+    switch ($opcionViaje) {
+      case 1:
+        // Acción para agregar viaje
+        echo "AGREGAR VIAJE \n\n";
+        echo "Ingrese destino del viaje: \n";
         $destino = trim(fgets(STDIN));
-        if ($destino == "") {
-          $destino = $objViaje->getDestino();
-        }
-
-        echo "Ingrese la nueva capacidad máxima de pasajeros (actual: " . $objViaje->getMaxCantP() . "): \n";
+        echo "Ingrese capacidad máxima de pasajeros: \n";
         $capacidadMax = trim(fgets(STDIN));
-        if ($capacidadMax == "") {
-          $capacidadMax = $objViaje->getMaxCantP();
-        }
-
-        echo "Ingrese el nuevo ID de la empresa (actual: " . $objViaje->getObjEmpresa()->getIdEmpresa() . "): \n";
+        echo "Ingrese ID de la empresa: \n";
         $idEmpresa = trim(fgets(STDIN));
         $objEmpresa = new Empresa();
-        if ($idEmpresa != "" && !$objEmpresa->Buscar($idEmpresa)) {
-          echo "Empresa no encontrada en la BD\n";
-          $objEmpresa = $objViaje->getObjEmpresa();
+        if (!$objEmpresa->Buscar($idEmpresa)) {
+          echo "Empresa no encontrada, en caso de querer volver a intentar agregar una empresa, hágalo desde las modificaciones";
+          $objEmpresa = null;
         }
-        if ($idEmpresa == "") {
-          $objEmpresa = $objViaje->getObjEmpresa();
-        }
-
-        echo "Ingrese el nuevo número del empleado responsable (actual: " . $objViaje->getObjResponsable()->getNumEmp() . "): \n";
+        echo "Ingrese número del empleado responsable: \n";
         $responsable = trim(fgets(STDIN));
         $objResponsable = new Responsable();
-        if ($responsable != "" && !$objResponsable->Buscar($responsable)) {
-          echo "Responsable no encontrado en la BD\n";
-          $objResponsable = $objViaje->getObjResponsable();
+        if (!$objResponsable->Buscar($responsable)) {
+          echo "Responsable no encontrado, en caso de querer volver a intentar agregar un responsable, hágalo desde las modificaciones";
+          $objResponsable = null;
         }
-        if ($responsable == "") {
-          $objResponsable = $objViaje->getObjResponsable();
-        }
-
-        echo "Ingrese el nuevo costo del viaje (actual: " . $objViaje->getCostoViaje() . "): \n";
+        echo "Ingrese costo del viaje: \n";
         $costoViaje = trim(fgets(STDIN));
-        if ($costoViaje == "") {
-          $costoViaje = $objViaje->getCostoViaje();
-        }
 
-        $objViaje->cargar($idViaje, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje, $objViaje->getColPasajeros());
+        $objViaje = new Viaje();
+        $objViaje->cargar(0, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje, []);
 
-        if ($objViaje->modificar()) {
-          echo "Viaje modificado con éxito.\n";
+        if ($objViaje->insertar()) {
+          echo "Viaje agregado con éxito.\n";
         } else {
-          echo "Error al modificar el viaje.\n";
+          echo "Error al agregar el viaje.\n";
         }
-      } else {
-        echo "Viaje no encontrado.\n";
-      }
-      break;
-    case 3:
-      // Acción para eliminar viaje
-      echo "ELIMINAR VIAJE \n\n";
-      echo "Ingrese el ID del viaje a eliminar: \n";
-      $idViaje = trim(fgets(STDIN));
+        break;
 
-      $objViaje = new Viaje();
-      if ($objViaje->Buscar($idViaje)) {
-        $objPasajero = new Pasajero();
-        $consulta = "idviaje =" . $idViaje;
-        $colPasajerosConViaje = $objPasajero->listar($consulta);
-        if (count($colPasajerosConViaje) > 0) {
-          echo "No se puede eliminar un viaje con pasajeros asociados\n";
-        } else {
+      case 2:
+        // Acción para modificar viaje
+        echo "MODIFICAR VIAJE \n\n";
+        echo "Ingrese el ID del viaje a modificar: \n";
+        $idViaje = trim(fgets(STDIN));
 
-          if ($objViaje->eliminar()) {
-            echo "Viaje eliminado con éxito.\n";
-          } else {
-            echo "Error al eliminar el viaje.\n";
+        $objViaje = new Viaje();
+        if ($objViaje->Buscar($idViaje)) {
+          echo "Ingrese el nuevo destino del viaje (actual: " . $objViaje->getDestino() . "): \n";
+          $destino = trim(fgets(STDIN));
+          if ($destino == "") {
+            $destino = $objViaje->getDestino();
           }
+
+          echo "Ingrese la nueva capacidad máxima de pasajeros (actual: " . $objViaje->getMaxCantP() . "): \n";
+          $capacidadMax = trim(fgets(STDIN));
+          if ($capacidadMax == "") {
+            $capacidadMax = $objViaje->getMaxCantP();
+          }
+
+          echo "Ingrese el nuevo ID de la empresa (actual: " . $objViaje->getObjEmpresa()->getIdEmpresa() . "): \n";
+          $idEmpresa = trim(fgets(STDIN));
+          $objEmpresa = new Empresa();
+          if ($idEmpresa != "" && !$objEmpresa->Buscar($idEmpresa)) {
+            echo "Empresa no encontrada en la BD\n";
+            $objEmpresa = $objViaje->getObjEmpresa();
+          }
+          if ($idEmpresa == "") {
+            $objEmpresa = $objViaje->getObjEmpresa();
+          }
+
+          echo "Ingrese el nuevo número del empleado responsable (actual: " . $objViaje->getObjResponsable()->getNumEmp() . "): \n";
+          $responsable = trim(fgets(STDIN));
+          $objResponsable = new Responsable();
+          if ($responsable != "" && !$objResponsable->Buscar($responsable)) {
+            echo "Responsable no encontrado en la BD\n";
+            $objResponsable = $objViaje->getObjResponsable();
+          }
+          if ($responsable == "") {
+            $objResponsable = $objViaje->getObjResponsable();
+          }
+
+          echo "Ingrese el nuevo costo del viaje (actual: " . $objViaje->getCostoViaje() . "): \n";
+          $costoViaje = trim(fgets(STDIN));
+          if ($costoViaje == "") {
+            $costoViaje = $objViaje->getCostoViaje();
+          }
+
+          $objViaje->cargar($idViaje, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje);
+
+          if ($objViaje->modificar()) {
+            echo "Viaje modificado con éxito.\n";
+          } else {
+            echo "Error al modificar el viaje.\n";
+          }
+        } else {
+          echo "Viaje no encontrado.\n";
         }
-      } else {
-        echo "Viaje no encontrado.\n";
-      }
-      break;
+        break;
+      case 3:
+        // Acción para eliminar viaje
+        echo "ELIMINAR VIAJE \n\n";
+        echo "Ingrese el ID del viaje a eliminar: \n";
+        $idViaje = trim(fgets(STDIN));
 
-    case 4:
-      // Acción para buscar viaje
-      echo "Ingrese el número del viaje que desea buscar: \n";
-      $idViaje = trim(fgets(STDIN));
-      $objViaje = new Viaje();
-      if ($objViaje->Buscar($idViaje)) {
+        $objViaje = new Viaje();
+        if ($objViaje->Buscar($idViaje)) {
+          $objPasajero = new Pasajero();
+          $consulta = "idviaje =" . $idViaje;
+          $colPasajerosConViaje = $objPasajero->listar($consulta);
+          if (count($colPasajerosConViaje) > 0) {
+            echo "No se puede eliminar un viaje con pasajeros asociados\n";
+          } else {
 
-        echo $objViaje;
-      } else {
-        echo "No se encontró el viaje indicado.\n";
-      }
-      break;
-
-    case 5:
-      echo "Mostrando Lista completa de pasajeros: \n";
-      $objViaje = new Viaje();
-
-      $listaViajes = $objViaje->Listar();
-      $cadena = "";
-      if ($listaViajes != null) {
-
-        foreach ($listaViajes as $viaje) {
-          $cadena .= $viaje . "\n";
+            if ($objViaje->eliminar()) {
+              echo "Viaje eliminado con éxito.\n";
+            } else {
+              echo "Error al eliminar el viaje.\n";
+            }
+          }
+        } else {
+          echo "Viaje no encontrado.\n";
         }
-        echo $cadena;
-      } else {
-        echo "Aún no se cargaron pasajeros en la BD\n";
-      }
-      break;
-    case 6:
-      // Volver al menú principal
-      $salirMenuViaje = true;
-      break;
-    default:
-      echo "Opción no válida \n";
-      break;
-  }
+        break;
+
+      case 4:
+        // Acción para buscar viaje
+        echo "Ingrese el número del viaje que desea buscar: \n";
+        $idViaje = trim(fgets(STDIN));
+        $objViaje = new Viaje();
+        if ($objViaje->Buscar($idViaje)) {
+
+          echo $objViaje;
+        } else {
+          echo "No se encontró el viaje indicado.\n";
+        }
+        break;
+
+      case 5:
+        echo "Mostrando Lista completa de vaijes: \n";
+        $objViaje = new Viaje();
+
+        $listaViajes = $objViaje->Listar();
+        $cadena = "";
+        if ($listaViajes != null) {
+
+          foreach ($listaViajes as $viaje) {
+            $cadena .= $viaje . "\n";
+          }
+          echo $cadena;
+        } else {
+          echo "Aún no se cargaron viajes en la BD\n";
+        }
+        break;
+      case 6:
+        echo "LISTAR TODOS LOS PASAJEROS DE UN VIAJE\n";
+        echo "Ingrese el id del viaje que quiere ver: \n";
+        $idviaje = trim(fgets(STDIN));
+        $objViaje = new Viaje();
+        if ($objViaje->Buscar($idviaje)) {
+          $objPasajero = new Pasajero();
+          $condicion = "idviaje = " . $idviaje;
+
+          $colPasajeros = $objPasajero->listar($condicion);
+
+          $mensaje = "Para el viaje " . $idviaje . "\nSus pasajeros son: \n";
+          foreach ($colPasajeros as $pasajero) {
+            $mensaje .= "\n" . $pasajero . "\n";
+          }
+          echo $mensaje;
+        } else {
+          echo "Viaje no encontrado\n";
+        }
+
+        break;
+      case 7:
+        // Volver al menú principal
+        $salirMenuViaje = true;
+        break;
+      default:
+        echo "Opción no válida \n";
+        break;
+    }
+  } while (!$salirMenuViaje);
 }
 
 
@@ -545,17 +576,16 @@ function menuPasajeros()
           ///verificando que se pueda agregar el pasajero a viaje
           $objViaje = new Viaje();
           $objViaje->Buscar($viajeId);
-          if (!$objViaje->Buscar($viajeId)) {
+          if ($viajeId != "" && !$objViaje->Buscar($viajeId)) {
             echo "Viaje no encontrado, vuelva a intentar luego\n";
-            $viajeId = 0;
+            $viajeId = null;
           }
-          if (!($objViaje->getColPasajeros() <= $objViaje->getMaxCantP())) {
-            echo "Pasajes agotados para este viaje\n
-            vuelva a intentar luego\n";
-            $viajeId = 0;
+          if ($viajeId == "") {
+            echo "Viaje no ingresado, vuelva a intentar luego \n";
           }
 
-          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0 && $viajeId != 0) {
+
+          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0 && $viajeId != null) {
             $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel, $viajeId);
             if ($objPasajero->insertar()) {
               echo "El pasajero se agregó correctamente a la BD\n";

@@ -15,7 +15,7 @@ class Pasajero
     $this->apellido = "";
     $this->nrodoc = 0;
     $this->telefono = 0;
-    $this->objViaje = null;
+    $this->objViaje = new Viaje();
   }
 
   public function cargar($nrodoc, $nombre, $apellido, $telefono, $idViaje)
@@ -92,9 +92,9 @@ class Pasajero
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaPasajero)) {
         if ($row2 = $base->Registro()) {
-          // $unViaje = new Viaje();
-          // $unViaje->Buscar($row2["idviaje"]);
-          $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $row2["idviaje"]);
+          $unViaje = new Viaje();
+          $unViaje->Buscar($row2["idviaje"]);
+          $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje);
           $resp = true;
         }
       } else {
@@ -119,8 +119,10 @@ class Pasajero
       if ($base->Ejecutar($consultaPasajeros)) {
         $arregloPasajero = array();
         while ($row2 = $base->Registro()) {
+          $unViaje = new Viaje();
+          $unViaje->Buscar($row2["idviaje"]);
           $pasajero = new Pasajero();
-          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $row2["idviaje"]);
+          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje);
           array_push($arregloPasajero, $pasajero);
         }
       } else {
@@ -136,8 +138,8 @@ class Pasajero
   {
     $base = new BaseDatos();
     $resp = false;
-    $consultaInsertar = "INSERT INTO pasajero(pdocumento,pnombre,papellido,ptelefono) 
-      VALUES (" . $this->getNrodoc()  . ",'" . $this->getNombre() . "' , '" . $this->getApellido() . "'," . $this->getTelefono() . ")";
+    $consultaInsertar = "INSERT INTO pasajero(pdocumento,pnombre,papellido,ptelefono,idviaje) 
+      VALUES (" . $this->getNrodoc()  . ",'" . $this->getNombre() . "' , '" . $this->getApellido() . "'," . $this->getTelefono() . "," . $this->getobjViaje() . ")";
 
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaInsertar)) {

@@ -26,7 +26,7 @@ class Viaje
     $this->colPasajeros = [];
   }
 
-  public function cargar($idviaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje, $colPasajeros)
+  public function cargar($idviaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje)
   {
     $this->setViajeCod($idviaje);
     $this->setDestino($destino);
@@ -34,7 +34,7 @@ class Viaje
     $this->setObjEmpresa($idEmpresa);
     $this->setObjResponsable($responsable);
     $this->setCostoViaje($costoViaje);
-    $this->setColPasajeros($colPasajeros);
+    // $this->setColPasajeros($colPasajeros);
     // $this->setMontoTotalAbonado($montoTotalAbonado);
   }
 
@@ -65,14 +65,14 @@ class Viaje
     $this->vcantmaxpasajeros = $capacidadMax;
   }
 
-  public function getColPasajeros()
-  {
-    return $this->colPasajeros;
-  }
-  public function setColPasajeros($aPasajeros)
-  {
-    $this->colPasajeros = $aPasajeros;
-  }
+  // public function getColPasajeros()
+  // {
+  //   return $this->colPasajeros;
+  // }
+  // public function setColPasajeros($aPasajeros)
+  // {
+  //   $this->colPasajeros = $aPasajeros;
+  // }
 
   public function getObjEmpresa()
   {
@@ -135,9 +135,9 @@ class Viaje
           $objetoResponsable = new Responsable();
           $objetoResponsable->Buscar($row2["rnumeroempleado"]);
 
-          $objPasajero = new Pasajero();
-          $condicion = "idviaje=" . $row2["idviaje"];
-          $colPasajeros = $objPasajero->listar($condicion);
+          // $objPasajero = new Pasajero();
+          // $condicion = "idviaje=" . $row2["idviaje"];
+          // $colPasajeros = $objPasajero->listar($condicion);
 
 
           $this->cargar(
@@ -146,8 +146,8 @@ class Viaje
             $row2["vcantmaxpasajeros"],
             $objetoEmpresa,
             $objetoResponsable,
-            $row2["vimporte"],
-            $colPasajeros
+            $row2["vimporte"]
+            // $colPasajeros
           );
           $resp = true;
         }
@@ -183,12 +183,12 @@ class Viaje
           $maxPasajeros = $row2['vcantmaxpasajeros'];
           $ValorVia = $row2['vimporte'];
 
-          $objPasajero = new Pasajero();
-          $condicion = "idviaje=" . $row2["idviaje"];
-          $colPasajeros = $objPasajero->listar($condicion);
+          // $objPasajero = new Pasajero();
+          // $condicion = "idviaje=" . $row2["idviaje"];
+          // $colPasajeros = $objPasajero->listar($condicion);
 
           $viaje = new Viaje();
-          $viaje->cargar($VId, $viajeDest, $maxPasajeros, $objetoEmpresa, $objetoResponsable, $ValorVia, $colPasajeros);
+          $viaje->cargar($VId, $viajeDest, $maxPasajeros, $objetoEmpresa, $objetoResponsable, $ValorVia);
           array_push($arregloViajes, $viaje);
         }
       } else {
@@ -391,11 +391,11 @@ VALUES ('" . $this->getDestino() . "','" . $this->getMaxCantP() . "', '" . $this
       "Empresa de viaje: " . $this->getObjEmpresa() . " \n" .
       "numero de empleado responsable: " . $this->getObjResponsable() . " \n" .
       "Costo del viaje: " . $this->getCostoViaje() . "\n\n";
-    $colPasajeros = $this->getColPasajeros();
+    // $colPasajeros = $this->getColPasajeros();
 
-    foreach ($colPasajeros as $pasajero) {
-      $cadena .= "\n" . $pasajero . "\n";
-    }
+    // foreach ($colPasajeros as $pasajero) {
+    //   $cadena .= "\n" . $pasajero . "\n";
+    // }
 
 
     return $cadena;
