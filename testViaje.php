@@ -250,20 +250,43 @@ function menuEmpresa()
       break;
     case 3:
       // Acción para eliminar empresa
+      // echo "ELIMINAR EMPRESA \n\n";
+      // echo "Ingrese el ID de la empresa que desea eliminar: \n";
+      // $idEmpresa = trim(fgets(STDIN));
+      // $objEmpresa = new Empresa();
+
+      // if ($objEmpresa->Buscar($idEmpresa)) {
+      //   if ($objEmpresa->eliminar()) {
+      //     echo "Empresa eliminada con éxito.\n";
+      //   } else {
+      //     echo "Error al eliminar empresa.\n";
+      //   }
+      // } else {
+      //   echo "No se encontró la empresa con ese ID.\n";
+      // }
+      // break;
+      // Acción para eliminar empresa
       echo "ELIMINAR EMPRESA \n\n";
       echo "Ingrese el ID de la empresa que desea eliminar: \n";
       $idEmpresa = trim(fgets(STDIN));
+
       $objEmpresa = new Empresa();
       if ($objEmpresa->Buscar($idEmpresa)) {
-        if ($objEmpresa->eliminar()) {
-          echo "Empresa eliminada con éxito.\n";
-        } else {
-          echo "Error al eliminar empresa.\n";
-        }
+          $objViaje = new Viaje();
+          $consulta = "idempresa =" . $idEmpresa;
+          $colResponsablesConViaje = $objViaje->listar($consulta);
+          if (count($colResponsablesConViaje) > 0) {
+              echo "No se puede eliminar una empresa con empleados asociados.\n";
+          } else {
+              if ($objEmpresa->eliminar()) {
+                  echo "Empresa eliminada con éxito.\n";
+              } else {
+                  echo "Error al eliminar empresa.\n";
+              }
+          }
       } else {
-        echo "No se encontró la empresa con ese ID.\n";
+          echo "No se encontró la empresa con ese ID.\n";
       }
-      break;
     case 4:
       // Acción para buscar empresa
       echo "BUSCAR EMPRESA \n\n";
