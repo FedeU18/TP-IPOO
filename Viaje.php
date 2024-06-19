@@ -383,23 +383,3 @@ VALUES ('" . $this->getDestino() . "','" . $this->getMaxCantP() . "', '" . $this
       "Costo del viaje: " . $this->getCostoViaje() . "\n\n";
   }
 }
-
-include_once "./BaseDatos.php";
-include_once "./Responsable.php";
-include_once "./Empresa.php";
-
-$objViaje = new Viaje();
-$objEmpresa = new Empresa();
-$objEmpresa->Buscar(1);
-$objResponsable = new Responsable();
-$objResponsable->Buscar(1);
-$objViaje->cargar(7, "Neuquén", 20, $objEmpresa, $objResponsable, 10000);
-
-$objViaje->insertar();
-
-
-$colViajes = $objViaje->listar();
-
-foreach ($colViajes as $viaje) {
-  echo $viaje . "\n";
-}
