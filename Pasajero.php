@@ -6,6 +6,7 @@ class Pasajero
   private $apellido;
   private $nrodoc;
   private $telefono;
+  private $objViaje;
   private $mensajeoperacion;
 
   public function __construct()
@@ -14,14 +15,16 @@ class Pasajero
     $this->apellido = "";
     $this->nrodoc = 0;
     $this->telefono = 0;
+    $this->objViaje = null;
   }
 
-  public function cargar($nrodoc, $nombre, $apellido, $telefono)
+  public function cargar($nrodoc, $nombre, $apellido, $telefono, $idViaje)
   {
     $this->setNombre($nombre);
     $this->setApellido($apellido);
     $this->setNrodoc($nrodoc);
     $this->setTelefono($telefono);
+    $this->setobjViaje($idViaje);
   }
 
   public function getNombre()
@@ -60,6 +63,14 @@ class Pasajero
     $this->telefono = $telefono;
   }
 
+  public function getobjViaje (){
+    return $this->idviaje;
+  }
+  public function setobjViaje ($idViaje){
+    $this->idviaje = $idViaje;
+  }
+
+
 
   public function getMensajeoperacion()
   {
@@ -79,7 +90,9 @@ class Pasajero
     if ($base->Iniciar()) {
       if ($base->Ejecutar($consultaPasajero)) {
         if ($row2 = $base->Registro()) {
-          $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"]);
+          $unViaje = new Viaje();
+          $unViaje ->Buscar($row2["idviaje"]);
+          $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje );
           $resp = true;
         }
       } else {
@@ -104,8 +117,12 @@ class Pasajero
       if ($base->Ejecutar($consultaPasajeros)) {
         $arregloPasajero = array();
         while ($row2 = $base->Registro()) {
+          $unViaje = new Viaje();
+          $unViaje ->Buscar($row2["idviaje"]);
+
+
           $pasajero = new Pasajero();
-          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"]);
+          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje );
           array_push($arregloPasajero, $pasajero);
         }
       } else {

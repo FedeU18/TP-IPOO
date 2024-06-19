@@ -539,6 +539,15 @@ function menuPasajeros()
           $apellido = trim(fgets(STDIN));
           echo "Ingrese número de teléfono: \n";
           $tel = trim(fgets(STDIN));
+          echo "Ingrese número de viaje: \n";
+          $viajeId = trim(fgets(STDIN));
+
+         /* //verificando que se pueda agregar el pasajero a viaje
+          if ($viajeId != 0) {
+            $unViaje = new Viaje();
+            $unViaje->buscar($viajeId);
+          }*/
+
           if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0) {
             $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel);
             if ($objPasajero->insertar()) {
