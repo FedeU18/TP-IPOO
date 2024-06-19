@@ -63,11 +63,13 @@ class Pasajero
     $this->telefono = $telefono;
   }
 
-  public function getobjViaje (){
-    return $this->idviaje;
+  public function getobjViaje()
+  {
+    return $this->objViaje;
   }
-  public function setobjViaje ($idViaje){
-    $this->idviaje = $idViaje;
+  public function setobjViaje($idViaje)
+  {
+    $this->objViaje = $idViaje;
   }
 
 
@@ -91,8 +93,8 @@ class Pasajero
       if ($base->Ejecutar($consultaPasajero)) {
         if ($row2 = $base->Registro()) {
           $unViaje = new Viaje();
-          $unViaje ->Buscar($row2["idviaje"]);
-          $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje );
+          $unViaje->Buscar($row2["idviaje"]);
+          $this->cargar($dni, $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje);
           $resp = true;
         }
       } else {
@@ -118,11 +120,11 @@ class Pasajero
         $arregloPasajero = array();
         while ($row2 = $base->Registro()) {
           $unViaje = new Viaje();
-          $unViaje ->Buscar($row2["idviaje"]);
+          $unViaje->Buscar($row2["idviaje"]);
 
 
           $pasajero = new Pasajero();
-          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje );
+          $pasajero->cargar($row2["pdocumento"], $row2["pnombre"], $row2["papellido"], $row2["ptelefono"], $unViaje);
           array_push($arregloPasajero, $pasajero);
         }
       } else {

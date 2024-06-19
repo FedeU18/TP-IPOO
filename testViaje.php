@@ -273,20 +273,20 @@ function menuEmpresa()
 
       $objEmpresa = new Empresa();
       if ($objEmpresa->Buscar($idEmpresa)) {
-          $objViaje = new Viaje();
-          $consulta = "idempresa =" . $idEmpresa;
-          $colResponsablesConViaje = $objViaje->listar($consulta);
-          if (count($colResponsablesConViaje) > 0) {
-              echo "No se puede eliminar una empresa con empleados asociados.\n";
+        $objViaje = new Viaje();
+        $consulta = "idempresa =" . $idEmpresa;
+        $colResponsablesConViaje = $objViaje->listar($consulta);
+        if (count($colResponsablesConViaje) > 0) {
+          echo "No se puede eliminar una empresa con empleados asociados.\n";
+        } else {
+          if ($objEmpresa->eliminar()) {
+            echo "Empresa eliminada con éxito.\n";
           } else {
-              if ($objEmpresa->eliminar()) {
-                  echo "Empresa eliminada con éxito.\n";
-              } else {
-                  echo "Error al eliminar empresa.\n";
-              }
+            echo "Error al eliminar empresa.\n";
           }
+        }
       } else {
-          echo "No se encontró la empresa con ese ID.\n";
+        echo "No se encontró la empresa con ese ID.\n";
       }
     case 4:
       // Acción para buscar empresa
@@ -542,14 +542,16 @@ function menuPasajeros()
           echo "Ingrese número de viaje: \n";
           $viajeId = trim(fgets(STDIN));
 
-         /* //verificando que se pueda agregar el pasajero a viaje
-          if ($viajeId != 0) {
-            $unViaje = new Viaje();
-            $unViaje->buscar($viajeId);
-          }*/
+          ///verificando que se pueda agregar el pasajero a viaje
+          $unViaje = new Viaje();
+          $unViaje->Buscar($viajeId);
+          if ($viajeId != "" && !$unViaje->Buscar($viajeId)) {
+            echo "No se encontró un viaje con ese id en la BD, intente agregarlo luego\n";
+            $unViaje = null;
+          }
 
-          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0) {
-            $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel);
+          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0 && $unViaje != null) {
+            $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel, $unViaje);
             if ($objPasajero->insertar()) {
               echo "El pasajero se agregó correctamente a la BD\n";
             } else {
