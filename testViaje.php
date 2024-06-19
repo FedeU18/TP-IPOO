@@ -544,8 +544,14 @@ function menuPasajeros()
 
           ///verificando que se pueda agregar el pasajero a viaje
           $objViaje = new Viaje();
+          $objViaje->Buscar($viajeId);
           if (!$objViaje->Buscar($viajeId)) {
             echo "Viaje no encontrado, vuelva a intentar luego\n";
+            $viajeId = 0;
+          }
+          if (!($objViaje->getColPasajeros() <= $objViaje->getMaxCantP())) {
+            echo "Pasajes agotados para este viaje\n
+            vuelva a intentar luego\n";
             $viajeId = 0;
           }
 
