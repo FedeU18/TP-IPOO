@@ -281,7 +281,7 @@ function menuEmpresa()
           $consulta = "idempresa =" . $idEmpresa;
           $colResponsablesConViaje = $objViaje->listar($consulta);
           if (count($colResponsablesConViaje) > 0) {
-            echo "No se puede eliminar una empresa con empleados asociados.\n";
+            echo "No se puede eliminar una empresa con viajes asociados.\n";
           } else {
             if ($objEmpresa->eliminar()) {
               echo "Empresa eliminada con éxito.\n";
@@ -292,6 +292,7 @@ function menuEmpresa()
         } else {
           echo "No se encontró la empresa con ese ID.\n";
         }
+        break;
       case 4:
         // Acción para buscar empresa
         echo "BUSCAR EMPRESA \n\n";
