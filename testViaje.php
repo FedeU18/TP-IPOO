@@ -1,5 +1,6 @@
 <?php
 
+use LDAP\Result;
 
 include 'BaseDatos.php';
 include 'Empresa.php';
@@ -386,16 +387,26 @@ function menuViaje()
           $capacidadMax = $objViaje->getMaxCantP();
         }
 
-        echo "Ingrese el nuevo ID de la empresa (actual: " . $objViaje->getIdEmpresa() . "): \n";
+        echo "Ingrese el nuevo ID de la empresa (actual: " . $objViaje->getObjEmpresa()->getIdEmpresa() . "): \n";
         $idEmpresa = trim(fgets(STDIN));
+        $objEmpresa = new Empresa();
+        if ($idEmpresa != "" && !$objEmpresa->Buscar($idEmpresa)) {
+          echo "Empresa no encontrada en la BD\n";
+          $objEmpresa = $objViaje->getObjEmpresa();
+        }
         if ($idEmpresa == "") {
-          $idEmpresa = $objViaje->getIdEmpresa();
+          $objEmpresa = $objViaje->getObjEmpresa();
         }
 
-        echo "Ingrese el nuevo número del empleado responsable (actual: " . $objViaje->getResponsable() . "): \n";
+        echo "Ingrese el nuevo número del empleado responsable (actual: " . $objViaje->getObjResponsable()->getNumEmp() . "): \n";
         $responsable = trim(fgets(STDIN));
+        $objResponsable = new Responsable();
+        if ($responsable != "" && !$objResponsable->Buscar($responsable)) {
+          echo "Responsable no encontrado en la BD\n";
+          $objResponsable = $objViaje->getObjResponsable();
+        }
         if ($responsable == "") {
-          $responsable = $objViaje->getResponsable();
+          $objResponsable = $objViaje->getObjResponsable();
         }
 
         echo "Ingrese el nuevo costo del viaje (actual: " . $objViaje->getCostoViaje() . "): \n";
@@ -404,7 +415,7 @@ function menuViaje()
           $costoViaje = $objViaje->getCostoViaje();
         }
 
-        $objViaje->cargar($idViaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje);
+        $objViaje->cargar($idViaje, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje);
 
         if ($objViaje->modificar()) {
           echo "Viaje modificado con éxito.\n";
@@ -447,12 +458,7 @@ function menuViaje()
       $idViaje = trim(fgets(STDIN));
       $objViaje = new Viaje();
       if ($objViaje->Buscar($idViaje)) {
-        $objEmpresa = new Empresa();
-        $objEmpresa->Buscar($objViaje->getIdEmpresa());
-        $objResponsable = new Responsable();
-        $objResponsable->Buscar($objViaje->getResponsable());
-        $objViaje->setResponsable($objResponsable);
-        $objViaje->setIdEmpresa($objEmpresa);
+
         echo $objViaje;
       } else {
         echo "No se encontró el viaje indicado.\n";
