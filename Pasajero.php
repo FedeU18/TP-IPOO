@@ -193,6 +193,7 @@ class Pasajero
 
   public function __toString()
   {
-    return "Nombre: " . $this->getNombre() . "\nApellido: " . $this->getApellido() . "\nNro Documento: " . $this->getNrodoc() . "\n";
+    return "Nombre: " . $this->getNombre() . "\nApellido: " . $this->getApellido() . "\nNro Documento: " . $this->getNrodoc() . "\n"
+    . $this->getobjViaje() . "\n";
   }
 }

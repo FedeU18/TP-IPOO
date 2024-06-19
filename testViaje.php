@@ -581,7 +581,7 @@ function menuPasajeros()
             echo "Viaje no encontrado, vuelva a intentar luego\n";
             $viajeId = null;
           }
-          if ($viajeId == "") {
+          if ($viajeId === "") {
             echo "Viaje no ingresado, vuelva a intentar luego \n";
           }
 
@@ -627,8 +627,8 @@ function menuPasajeros()
         echo "Ingrese el numero de DNI del pasajero que desea buscar: \n";
         $dni = trim(fgets(STDIN));
         $persona = new Pasajero();
-        $persona->Buscar($dni);
-        if ($persona !== null) {
+        
+        if($persona->Buscar($dni)){
           echo $persona;
         } else {
           echo "No se encontro a la persona indicada.\n";
