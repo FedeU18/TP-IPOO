@@ -19,11 +19,11 @@ class Viaje
     $this->idviaje = 0;
     $this->vdestino = "";
     $this->vcantmaxpasajeros = 0;
-    $this->objEmpresa = null;
-    $this->objResponsable = null;
+    $this->objEmpresa = new Empresa();
+    $this->objResponsable = new Responsable();
     $this->vimporte = 0;
     $this->montoTotalAbonado = 0;
-    $this->colPasajeros = null;
+    $this->colPasajeros = [];
   }
 
   public function cargar($idviaje, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje)
@@ -393,7 +393,7 @@ $objEmpresa = new Empresa();
 $objEmpresa->Buscar(1);
 $objResponsable = new Responsable();
 $objResponsable->Buscar(1);
-$objViaje->cargar(6, "Neuquén", 20, $objEmpresa, $objResponsable, 10000);
+$objViaje->cargar(7, "Neuquén", 20, $objEmpresa, $objResponsable, 10000);
 
 $objViaje->insertar();
 
