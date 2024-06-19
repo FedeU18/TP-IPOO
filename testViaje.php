@@ -329,13 +329,23 @@ function menuViaje()
       $capacidadMax = trim(fgets(STDIN));
       echo "Ingrese ID de la empresa: \n";
       $idEmpresa = trim(fgets(STDIN));
+      $objEmpresa = new Empresa();
+      if (!$objEmpresa->Buscar($idEmpresa)) {
+        echo "Empresa no encontrada, en caso de querer volver a intentar agregar una empresa, hágalo desde las modificaciones";
+        $objEmpresa = null;
+      }
       echo "Ingrese número del empleado responsable: \n";
       $responsable = trim(fgets(STDIN));
+      $objResponsable = new Responsable();
+      if (!$objResponsable->Buscar($responsable)) {
+        echo "Responsable no encontrado, en caso de querer volver a intentar agregar un responsable, hágalo desde las modificaciones";
+        $objResponsable = null;
+      }
       echo "Ingrese costo del viaje: \n";
       $costoViaje = trim(fgets(STDIN));
 
       $objViaje = new Viaje();
-      $objViaje->cargar(0, $destino, $capacidadMax, $idEmpresa, $responsable, $costoViaje);
+      $objViaje->cargar(0, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje);
 
       if ($objViaje->insertar()) {
         echo "Viaje agregado con éxito.\n";
