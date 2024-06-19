@@ -368,7 +368,7 @@ function menuViaje()
       $costoViaje = trim(fgets(STDIN));
 
       $objViaje = new Viaje();
-      $objViaje->cargar(0, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje);
+      $objViaje->cargar(0, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje, []);
 
       if ($objViaje->insertar()) {
         echo "Viaje agregado con éxito.\n";
@@ -425,7 +425,7 @@ function menuViaje()
           $costoViaje = $objViaje->getCostoViaje();
         }
 
-        $objViaje->cargar($idViaje, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje);
+        $objViaje->cargar($idViaje, $destino, $capacidadMax, $objEmpresa, $objResponsable, $costoViaje, $objViaje->getColPasajeros());
 
         if ($objViaje->modificar()) {
           echo "Viaje modificado con éxito.\n";
@@ -543,15 +543,14 @@ function menuPasajeros()
           $viajeId = trim(fgets(STDIN));
 
           ///verificando que se pueda agregar el pasajero a viaje
-          $unViaje = new Viaje();
-          $unViaje->Buscar($viajeId);
-          if ($viajeId != "" && !$unViaje->Buscar($viajeId)) {
-            echo "No se encontró un viaje con ese id en la BD, intente agregarlo luego\n";
-            $unViaje = null;
+          $objViaje = new Viaje();
+          if (!$objViaje->Buscar($viajeId)) {
+            echo "Viaje no encontrado, vuelva a intentar luego\n";
+            $viajeId = 0;
           }
 
-          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0 && $unViaje != null) {
-            $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel, $unViaje);
+          if ($nroDoc != 0 && $nombre != "" && $apellido != "" && $tel != 0 && $viajeId != 0) {
+            $objPasajero->cargar($nroDoc, $nombre, $apellido, $tel, $viajeId);
             if ($objPasajero->insertar()) {
               echo "El pasajero se agregó correctamente a la BD\n";
             } else {
